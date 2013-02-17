@@ -1,0 +1,49 @@
+package com.lducks.battlepunishments.util;
+
+import org.bukkit.Bukkit;
+
+/**
+ * 
+ * @author lDucks
+ *
+ */
+
+public class PluginLoader {
+	/**
+	 * 
+	 * @return boolean If Herochat is installed
+	 */
+	public static boolean herochatInstalled(){
+		return (Bukkit.getPluginManager().getPlugin("Herochat") != null);
+	}
+
+	/**
+	 * 
+	 * @return boolean If TagAPI is installed
+	 */
+	public static boolean tagAPIInstalled(){
+		return (Bukkit.getPluginManager().getPlugin("TagAPI") != null);
+	}
+	
+	/**
+	 * 
+	 * @return boolean If Vault is installed
+	 */
+	public static boolean vaultInstalled(){
+		return (Bukkit.getPluginManager().getPlugin("Vault") != null);
+	}
+
+	/**
+	 * @return boolean Essentials is installed
+	 */
+	public static boolean essentialsInstalled() {
+		return (Bukkit.getPluginManager().getPlugin("Essentials") != null);
+	}
+
+	/**
+	 * @return boolean CommandBook is installed
+	 */
+	public static boolean cmdBookInstalled() {
+		return (Bukkit.getPluginManager().getPlugin("CommandBook") != null);
+	}
+}

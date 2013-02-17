@@ -1,0 +1,70 @@
+name: BattlePunishments
+main: com.lducks.battlepunishments.BattlePunishments
+version: 2.9.0
+description: An all around minecraft player/admin management system that contains bans, mutes, IP tracking, watchlists, player help commands, and much, much more.
+authors: [lDucks]
+softdepend: [Herochat, TagAPI, Vault, CommandBook, Essentials]
+
+commands:
+   watchlist:
+      usage: /watchlist [add|del|tp]
+      aliases: wl
+   needhelp:
+      usage: /needhelp
+   tpr:
+      usage: /tpr
+   ban:
+      usage: /ban <player|ip> [strikes] <time> <reason>
+   kick:
+      usage: /kick <player> <reason>
+   mute:
+      usage: /gmute <player> [strikes] <time> <reason>
+      aliases: gmute
+   unmute:
+      usage: /unmute <player>
+   playerinfo:
+      usage: /playerinfo <player>
+      aliases: pinfo, pi
+   editstk:
+      usage: /editstk
+   unban:
+      usage: /unban <player>
+   BattlePunishments:
+      usage: /bp [page]
+      aliases: bp
+   fm:
+      usage: /fm <player>
+   ip:
+      usage: /ip <player|ip>
+   ipmore:
+      usage: /ipmore <number>
+   respond:
+      usage: /respond <player>
+      aliases: resp
+   clearips:
+      usage: /clearips <player>
+      aliases: clearips
+   block:
+      usage: /block <player> <command>
+   unblock:
+      usage: /unblock <player> <command>
+   blocklist:
+      usage: /blocklist <player>
+   bc:
+      usage: /bc <message>
+   nick:
+      usage: /nick <player>
+   id:
+      usage: /id
+   tplast:
+      usage: /tplast
+   bpreload:
+      usage: /bpreload
+   sneak:
+      usage: /sneak
+   force:
+      usage: /force
+   stalk:
+      usage: /stalk
+   muteall:
+      usage: /muteall

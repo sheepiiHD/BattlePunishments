@@ -1,0 +1,136 @@
+# Whether or not you want to use the BattlePunishments.net website to sync bans
+website: true
+
+# Options for using MySQL or Sqlite. If disabled, the plugin will save data to flat files. Switching between 
+# storage types will lose the already saved data.
+sqloptions:
+  enabled: false
+  type: mysql 
+  # Sqlite or MySQL
+  db: minecraft
+  url: localhost
+  port: 3306
+  username: username
+  password: password
+  
+# Auto-updates the plugin when a new version is released on a unix/linux/mac server ONLY
+autoupdate: false
+
+# Whether or not to use the BattleLogs feature
+battlelog: true
+
+# Commands that will be registered by the plugin. Some commands may not be here due to them always being active.
+activecommands:
+- force
+- ban
+- mute
+- needhelp
+- block
+- nick
+- ip
+- kick
+- bc
+- tpr
+- dsaver
+- watchlist
+- playerinfo
+- id
+- tplast
+- sneak
+- stalk
+
+# Commands that are in the following list will be "listened to" when someone with the BattlePunishments.chatstalker uses /stalk
+stalkcommand:
+  stalklist:
+    - tell
+    - msg
+  format: "&d{sender}: {message}"
+  # Only {sender} and {message} can be used in the format. This is what the "stalker" will see when the player receives a message.
+
+debugging: false 
+# If set to true, debugging messages will be sent to console. This is mainly for development.
+
+defaultworld: world 
+# The default world for your server
+
+# DataSaver tries to cache data in order to save time when completing tasks
+datasaver:
+  cache: true 
+  # Caching enabled or disabled
+  
+# Log commands to console  
+logcommands: true 
+
+# AntiSpam is still being worked on, results may vary
+antispam:
+  enabled: true 
+  # Turn on and off the Antispam system
+  time: 5 
+  # The amount of time inbetween messages (in seconds) that is considered too fast.
+  amount: 10 
+  # The amount of times the system will wait before muting someone for spam.
+  
+playerinfo:
+  containsblocklist: true 
+  # The /playerinfo <player> command will also show you the /blocklist <player> information
+  
+watchlist:
+  removewhenbanned: true 
+  # Removes the player from the watchlist when banned
+  loginmessage: false 
+  # When a player logs in and is on the watchlist, everyone
+  # who can see the watchlist will get a message that the player has logged in
+
+strikes:
+  use: true 
+  # This will activate the strikes system on bans and mutes
+  autoban: true 
+  # If a player reachs the maximum amount of strikes they will be automatically banned
+  max: 3 
+  # Maximum amount of strikes a player can obtain
+  
+kick:
+  requirereason: true 
+  # This will require a reason to kick someone
+  
+needhelp:
+  cooldown: 60 
+  # Cooldown (in seconds) between usages of the /needhelp command
+  requirereason: true 
+  # If true, this will require a person to enter a reason for requesting help.
+  
+bans:
+# All ban settings
+  ipban:
+    smartban: true 
+    # Will ban every IP connected to that specific IP
+  showbanner: true
+  # Show the player who banned them.
+  notifyserver:
+  # Will notify the entire server when a player has been banned
+    enabled: false
+    format: "&c{banner} has banned {player} until {unbantime} for {reason}!"
+    # The message that will be sent to the server.
+    
+force:
+    samelevel: false
+    # Whether or not someone can force a person with the force node.
+    
+nicknames:
+  usetagapi: false 
+  # Allow nicknames to change the tag above a player's head
+  changetabname: true
+  # Changes the name when a player uses the "tab" playerlist key
+  
+# Allows you to pick how your chat will look. Does not work with Herochat!
+customchat:
+  enabled: false
+  format: "&f<{name}>: &7{message}"
+  # Currently, you can only use {name} (their name) and {message} (the mesage) as parameters. 
+  # However, if you have Vault installed, you can use {prefix} and {suffix}.
+  
+# When a player joins for the first time, this message will be sent to the entire server.
+welcomemessage:
+  enabled: true
+  format: "&ePlease welcome &4{name} &eto the server!"
+  # Currently you can only use the {name} (their name) parameter.
