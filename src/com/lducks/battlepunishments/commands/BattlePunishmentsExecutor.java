@@ -36,6 +36,11 @@ public class BattlePunishmentsExecutor extends CustomCommandExecutor {
 	public void onHelpCommand(CommandSender sender, Integer page) {
 		help(page,sender);
 	}
+	
+	@MCCommand(cmds="version")
+	public void onVersionCommand(CommandSender sender) {
+		sender.sendMessage(YELLOW + BattlePunishments.getPluginName() + " " + BattlePunishments.getVersion());
+	}
 
 	@MCCommand(op=true, cmds={"verify"})
 	public void onVerifyExecute(CommandSender sender, String key) {
