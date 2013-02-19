@@ -19,10 +19,10 @@ public class StrikesExecutor extends CustomCommandExecutor{
 	public void onEditStrikesCommand(CommandSender sender, BattlePlayer bp, Integer s) {
 		bp.editStrikes(s);
 		sender.sendMessage(RED + bp.getRealName() + " now has " + 
-				bp.getStrikes() + "/"+ BattleSettings.getMaxStrikes() +" strikes.");
+				bp.getStrikes() + "/"+ BattleSettings.getStrikesMax() +" strikes.");
 		
 		if(BattleSettings.useBattleLog())
 			BattleLog.addMessage(bp.getRealName() + "'s strikes were changed by " + sender.getName() + ". "+bp.getRealName() 
-					+ " now has " + bp.getStrikes() + "/"+ BattleSettings.getMaxStrikes() +" strikes.");
+					+ " now has " + bp.getStrikes() + "/"+ BattleSettings.getStrikesMax() +" strikes.");
 	}
 }

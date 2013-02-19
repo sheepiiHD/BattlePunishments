@@ -245,14 +245,11 @@ public class BattleSQLConfiguration{
 
 		if(s < 0)
 			s = 0;
-		else if(s > BattleSettings.getMaxStrikes())
-			s = BattleSettings.getMaxStrikes();
+		else if(s > BattleSettings.getStrikesMax())
+			s = BattleSettings.getStrikesMax();
 
-		if(s > BattleSettings.getMaxStrikes()){
-			s = BattleSettings.getMaxStrikes();
-			if(BattleSettings.getStrikesAutoban()){
-				ban(name, "You have too many strikes!", -1, "Server", false);
-			}
+		if(s >= BattleSettings.getStrikesCap() && BattleSettings.getStrikesAutoban()){
+			ban(name, "You have too many strikes!", -1, "Server", false);
 		}
 
 		if(sqltype.equalsIgnoreCase("sqlite"))

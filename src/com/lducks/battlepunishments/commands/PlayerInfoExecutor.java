@@ -92,7 +92,7 @@ public class PlayerInfoExecutor extends CustomCommandExecutor{
 		if(BattleSettings.useStrikes() && sender.hasPermission(BattlePerms.STRIKES)){
 			int s = bp.getStrikes();
 			sender.sendMessage(GREEN + "Strikes: " + YELLOW + s + "/" + 
-					BattleSettings.getMaxStrikes());
+					BattleSettings.getStrikesMax());
 		}
 
 		if(bp.getNickname() != null) {

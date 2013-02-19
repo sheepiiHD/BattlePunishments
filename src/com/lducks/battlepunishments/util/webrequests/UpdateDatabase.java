@@ -107,7 +107,7 @@ public class UpdateDatabase {
 		encodeDataPair(data, "server", server);
 		encodeDataPair(data, "player", bp.getRealName());
 		encodeDataPair(data, "strikes", ""+bp.getStrikes());
-		encodeDataPair(data, "maxstrikes", ""+BattleSettings.getMaxStrikes());
+		encodeDataPair(data, "maxstrikes", ""+BattleSettings.getStrikesMax());
 
 
 		URL url = new URL(updateURL+"?"+data.toString());

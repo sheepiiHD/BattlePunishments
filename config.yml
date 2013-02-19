@@ -85,9 +85,11 @@ strikes:
   use: true 
   # This will activate the strikes system on bans and mutes
   autoban: true 
-  # If a player reachs the maximum amount of strikes they will be automatically banned
+  # If a player reachs the strikes cap they will be automatically banned
+  cap: 3
+  # The strikes cap, this is the amount that a player gets banned at
   max: 3 
-  # Maximum amount of strikes a player can obtain
+  # Maximum amount of strikes a player can obtain. This can be higher than the cap.
   cooldown:
       time: 1d,1h
       # After time (1d and 1h by default) a strike will be removed from a player

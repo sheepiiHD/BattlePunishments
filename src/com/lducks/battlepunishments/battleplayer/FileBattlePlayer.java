@@ -500,31 +500,30 @@ public class FileBattlePlayer implements BattlePlayer {
 
 	public void editStrikes(int strikes){
 		int s = config.getInt("strikes");
-		
+
 		long laststrike = config.getInt("laststrike");
-		
+
 		try {
 			laststrike = TimeConverter.convertToLong(laststrike, BattleSettings.getCooldownTime());
 		} catch (Exception e) {
 			new DumpFile("editStrikes", e, "Error converting laststrike to long");
 			return;
 		}
-		
+
 		if(laststrike <= System.currentTimeMillis()) {
 			s = s - BattleSettings.getCooldownDrop();
 		}
-				
+
 		s = strikes + s;
 
 		if(s < 0)
 			s = 0;
 
-		if(s > BattleSettings.getMaxStrikes()){
-			s = BattleSettings.getMaxStrikes();
-			if(BattleSettings.getStrikesAutoban()){
-				ban("You have too many strikes!", -1, "Server", false);
-			}
+		if(s > BattleSettings.getStrikesCap() && BattleSettings.getStrikesAutoban()){
+			ban("You have too many strikes!", -1, "Server", false);
 		}
+
+		if(s > BattleSettings.getStrikesMax()) s = BattleSettings.getStrikesMax();
 		
 		if(s > 0)
 			config.set("strikes", s);
@@ -539,19 +538,19 @@ public class FileBattlePlayer implements BattlePlayer {
 			return 0;
 
 		long laststrike = config.getInt("laststrike");
-		
+
 		try {
 			laststrike = TimeConverter.convertToLong(laststrike, BattleSettings.getCooldownTime());
 		} catch (Exception e) {
 			new DumpFile("editStrikes", e, "Error converting laststrike to long");
 			return 0;
 		}
-		
+
 		if(laststrike <= System.currentTimeMillis()) {
 			config.set("strikes", config.getInt("strikes") - BattleSettings.getCooldownDrop());
 			save();
 		}
-		
+
 		return config.getInt("strikes");
 	}
 

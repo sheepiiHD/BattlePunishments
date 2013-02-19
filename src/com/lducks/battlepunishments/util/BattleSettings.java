@@ -49,7 +49,11 @@ public class BattleSettings {
 		return config.getBoolean("needhelp.requirereason");
 	}
 
-	public static int getMaxStrikes(){
+	public static int getStrikesCap(){
+		return config.getInt("strikes.cap");
+	}
+	
+	public static int getStrikesMax(){
 		return config.getInt("strikes.max");
 	}
 
