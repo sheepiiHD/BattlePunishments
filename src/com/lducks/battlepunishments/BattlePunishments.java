@@ -106,7 +106,7 @@ public class BattlePunishments extends JavaPlugin{
 		}
 
 		new ConsoleMessage("sqlenabled   =   " + BattleSettings.sqlIsEnabled());
-		if(BattleSettings.sqlIsEnabled()) { /// initialize the sql instance... in this case the anonymous new SQLInstance
+		if(BattleSettings.sqlIsEnabled()) { // initialize the sql instance... in this case the anonymous new SQLInstance
 			sql = new SQLInstance();
 			SQLSerializerConfig.configureSQL(this, sql, BattleSettings.getSQLOptions());
 		}

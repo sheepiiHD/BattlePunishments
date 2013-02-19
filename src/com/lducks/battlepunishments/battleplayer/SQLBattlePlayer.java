@@ -8,7 +8,9 @@ import org.bukkit.entity.Player;
 
 import com.lducks.battlepunishments.BattlePunishments;
 import com.lducks.battlepunishments.debugging.ConsoleMessage;
+import com.lducks.battlepunishments.debugging.DumpFile;
 import com.lducks.battlepunishments.sql.SQLInstance;
+import com.lducks.battlepunishments.util.BattleSettings;
 import com.lducks.battlepunishments.util.CoordsCon;
 import com.lducks.battlepunishments.util.TimeConverter;
 
@@ -27,13 +29,13 @@ public class SQLBattlePlayer implements BattlePlayer {
 	public SQLBattlePlayer(String n, SQLInstance sql) throws Exception {
 		this.sql = sql;
 		config = new BattleSQLConfiguration(sql);
-		
+
 		name = n.toLowerCase();
 		String closename = config.getShortHandName(name);
-		
+
 		if(closename != null && getPlayer() == null)
 			name = closename;
-		
+
 		setRealName();
 		name = getRealName().toLowerCase();
 	}
@@ -123,7 +125,7 @@ public class SQLBattlePlayer implements BattlePlayer {
 	public boolean exists() {
 		if(config.getRealName(name) == null)
 			return false;
-		
+
 		return true;
 	}
 
@@ -160,6 +162,20 @@ public class SQLBattlePlayer implements BattlePlayer {
 	}
 
 	public int getStrikes() {
+
+		long laststrike;
+
+		try {
+			laststrike = Long.parseLong(config.getLastStrike(name));
+		}catch (Exception e) {
+			new DumpFile("editStrikes",e,"Error parsing laststrike to long");
+			return config.getStrikes(name);
+		}
+
+		if(laststrike <= System.currentTimeMillis()) {
+			config.setStrikes(name, BattleSettings.getCooldownDrop());
+		}
+
 		return config.getStrikes(name);
 	}
 
@@ -193,6 +209,19 @@ public class SQLBattlePlayer implements BattlePlayer {
 
 	public void editStrikes(int s) {
 		int strikes = config.getStrikes(name);
+		long laststrike;
+
+		try {
+			laststrike = Long.parseLong(config.getLastStrike(name));
+		}catch (Exception e) {
+			new DumpFile("editStrikes",e,"Error parsing laststrike to long");
+			return;
+		}
+
+		if(laststrike <= System.currentTimeMillis()) {
+			s = s - BattleSettings.getCooldownDrop();
+		}
+
 		strikes = strikes + s;
 		config.setStrikes(name, strikes);
 	}
@@ -212,13 +241,13 @@ public class SQLBattlePlayer implements BattlePlayer {
 
 	public void removePlayerFromWatchList() {
 		List<String> wl = BattlePunishments.getWatchList();
-		
+
 		new ConsoleMessage("Contains    ====   "+name);
-		
+
 		if(wl.contains(name)) {
-			
+
 			new ConsoleMessage("YES IT DOES CONTAIN              "+name);
-			
+
 			wl.remove(name);
 			BattlePunishments.setWatchList(wl);
 			config.removeFromWatchList(name);

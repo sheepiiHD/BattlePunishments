@@ -219,4 +219,19 @@ public class BattleSettings {
 	public static boolean useWebsite() {
 		return config.getBoolean("website");
 	}
+
+	/**
+	 * @return
+	 * @throws Exception 
+	 */
+	public static String getCooldownTime() throws Exception {
+		return config.getString("strikes.cooldown.time");
+	}
+
+	/**
+	 * @return
+	 */
+	public static int getCooldownDrop() {
+		return config.getInt("strikes.cooldown.amount");
+	}
 }

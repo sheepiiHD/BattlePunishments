@@ -10,17 +10,17 @@ public class TimeConverter {
 	static Calendar cal = new GregorianCalendar();
 
 	/**
-	 * 
+	 * @param before Time to start at
 	 * @param time ex: 1d,5s
 	 * @return Time in long
 	 * @throws Exception
 	 */
-	public static long convertToLong(String time) throws Exception{
+	public static long convertToLong(long before, String time) throws Exception{
 		String[] groupings = time.split(",");
 		if (groupings.length == 0)
 			return 0L;
 
-		cal.setTimeInMillis(System.currentTimeMillis());
+		cal.setTimeInMillis(before);
 		for (String str : groupings) {
 			if(str.length() == 0) {
 				throw new Exception("Unknown date value specified.");

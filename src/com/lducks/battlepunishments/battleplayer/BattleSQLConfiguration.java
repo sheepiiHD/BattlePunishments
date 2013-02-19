@@ -374,4 +374,10 @@ public class BattleSQLConfiguration{
 	public void setHasPlayedBefore(String name) {
 		sql.executeUpdate("INSERT INTO bp_playedbefore(player) VALUES(?)", name);
 	}
+
+
+	public String getLastStrike(String name) {
+		String getTimeOfBan = "select laststrike from bp_ban where player=?";
+		return sql.getString(getTimeOfBan, name);
+	}
 }

@@ -389,18 +389,10 @@ public class FileBattlePlayer implements BattlePlayer {
 	}
 
 	public List<String> getIPList(){
-		List<String> l = new ArrayList<String>();
-
-		for(String ip : config.getStringList("ips")) {
-			if(!l.contains(ip))
-				l.add(ip);
-			else
-				remove(ip);
-		}
-
-		return l;
+		return config.getStringList("ips");
 	}
 
+	@SuppressWarnings("unused")
 	private void remove(String ip) {
 		List<String> l = config.getStringList("ips");
 
@@ -508,6 +500,20 @@ public class FileBattlePlayer implements BattlePlayer {
 
 	public void editStrikes(int strikes){
 		int s = config.getInt("strikes");
+		
+		long laststrike = config.getInt("laststrike");
+		
+		try {
+			laststrike = TimeConverter.convertToLong(laststrike, BattleSettings.getCooldownTime());
+		} catch (Exception e) {
+			new DumpFile("editStrikes", e, "Error converting laststrike to long");
+			return;
+		}
+		
+		if(laststrike <= System.currentTimeMillis()) {
+			s = s - BattleSettings.getCooldownDrop();
+		}
+				
 		s = strikes + s;
 
 		if(s < 0)
@@ -519,7 +525,7 @@ public class FileBattlePlayer implements BattlePlayer {
 				ban("You have too many strikes!", -1, "Server", false);
 			}
 		}
-
+		
 		if(s > 0)
 			config.set("strikes", s);
 		else
@@ -532,6 +538,20 @@ public class FileBattlePlayer implements BattlePlayer {
 		if(!config.contains("strikes"))
 			return 0;
 
+		long laststrike = config.getInt("laststrike");
+		
+		try {
+			laststrike = TimeConverter.convertToLong(laststrike, BattleSettings.getCooldownTime());
+		} catch (Exception e) {
+			new DumpFile("editStrikes", e, "Error converting laststrike to long");
+			return 0;
+		}
+		
+		if(laststrike <= System.currentTimeMillis()) {
+			config.set("strikes", config.getInt("strikes") - BattleSettings.getCooldownDrop());
+			save();
+		}
+		
 		return config.getInt("strikes");
 	}
 

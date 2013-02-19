@@ -53,7 +53,7 @@ public class BanExecutor extends CustomCommandExecutor{
 
 			if(!time.contains("-1")) {
 				try {
-					t = TimeConverter.convertToLong(time);
+					t = TimeConverter.convertToLong(System.currentTimeMillis(), time);
 				}catch(Exception e) {
 					sender.sendMessage(RED + "Invalid time.");
 					return;
