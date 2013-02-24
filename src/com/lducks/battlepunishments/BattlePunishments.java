@@ -89,8 +89,8 @@ public class BattlePunishments extends JavaPlugin{
 		new FileMaker();
 		saveDefaultConfig();
 
-		BattleSettings cl = new BattleSettings();
-		cl.setConfig(new File(getPath()+"/config.yml"));
+		BattleSettings bs = new BattleSettings();
+		bs.setConfig(new File(getPath()+"/config.yml"));
 
 		try {
 			Metrics.runScripts();

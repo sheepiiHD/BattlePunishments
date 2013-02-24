@@ -68,7 +68,7 @@ public class BattlePunishmentsExecutor extends CustomCommandExecutor {
 		URL url;
 
 		try {
-			url = new URL("http://www.BattlePunishments.net/web/register.php?connection="+key+
+			url = new URL("http://www.BattlePunishments.net/grabbers/register.php?connection="+key+
 					"&server="+BattlePunishments.getServerIP());
 		} catch (Exception e) {
 			new ConsoleMessage("Error 3");
