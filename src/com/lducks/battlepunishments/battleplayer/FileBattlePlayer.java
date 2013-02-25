@@ -503,12 +503,16 @@ public class FileBattlePlayer implements BattlePlayer {
 
 		long laststrike = config.getInt("laststrike");
 
+
 		try {
-			laststrike = TimeConverter.convertToLong(laststrike, BattleSettings.getCooldownTime());
+			if(BattleSettings.getCooldownTime() != "-1") {
+				laststrike = TimeConverter.convertToLong(laststrike, BattleSettings.getCooldownTime());
+			}
 		} catch (Exception e) {
 			new DumpFile("editStrikes", e, "Error converting laststrike to long");
 			return;
 		}
+
 
 		if(laststrike <= System.currentTimeMillis()) {
 			s = s - BattleSettings.getCooldownDrop();
@@ -524,7 +528,7 @@ public class FileBattlePlayer implements BattlePlayer {
 		}
 
 		if(s > BattleSettings.getStrikesMax()) s = BattleSettings.getStrikesMax();
-		
+
 		if(s > 0)
 			config.set("strikes", s);
 		else

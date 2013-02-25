@@ -92,7 +92,7 @@ strikes:
   # Maximum amount of strikes a player can obtain. This can be higher than the cap.
   cooldown:
       time: 1d,1h
-      # After time (1d and 1h by default) a strike will be removed from a player
+      # After time (1d and 1h by default) a strike will be removed from a player, -1 for never
       amount: 1
       # Amount of strikes to remove after time has passed
   
