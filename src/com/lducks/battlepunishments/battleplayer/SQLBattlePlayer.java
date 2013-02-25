@@ -163,17 +163,19 @@ public class SQLBattlePlayer implements BattlePlayer {
 
 	public int getStrikes() {
 
-		long laststrike;
+		long laststrike = config.getInt("laststrike");
+
 
 		try {
-			laststrike = Long.parseLong(config.getLastStrike(name));
-		}catch (Exception e) {
-			new DumpFile("editStrikes",e,"Error parsing laststrike to long");
-			return config.getStrikes(name);
-		}
-
-		if(laststrike <= System.currentTimeMillis()) {
-			config.setStrikes(name, BattleSettings.getCooldownDrop());
+			if(BattleSettings.getCooldownTime() != "-1") {
+				laststrike = TimeConverter.convertToLong(laststrike, BattleSettings.getCooldownTime());
+				if(laststrike <= System.currentTimeMillis()) {
+					s = s - BattleSettings.getCooldownDrop();
+				}
+			}
+		} catch (Exception e) {
+			new DumpFile("editStrikes", e, "Error converting laststrike to long");
+			return;
 		}
 
 		return config.getStrikes(name);
