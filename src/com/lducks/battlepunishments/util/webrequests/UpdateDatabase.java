@@ -118,4 +118,30 @@ public class UpdateDatabase {
 		
 		reader.close();
 	}
+	
+	/**
+	 * @param bp BattlePlayer object
+	 */
+	public static void updateIP(BattlePlayer bp, String ip) throws IOException {
+		if(!BattleSettings.useWebsite() || !ConnectionCode.validConnectionCode() || !Bukkit.getOnlineMode() || bp.getStrikes() == 0)
+			return;
+
+		// Construct the post data
+		final StringBuilder data = new StringBuilder();
+
+		data.append(encode("type")).append('=').append(encode("ip"));
+		encodeDataPair(data, "key", key);
+		encodeDataPair(data, "server", server);
+		encodeDataPair(data, "player", bp.getRealName());
+		encodeDataPair(data, "ip", ip);
+
+
+		URL url = new URL(updateURL+"?"+data.toString());
+		URLConnection connection = url.openConnection();
+		
+		BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+		reader.read();
+		
+		reader.close();
+	}
 }

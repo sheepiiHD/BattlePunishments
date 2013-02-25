@@ -18,6 +18,7 @@ import com.lducks.battlepunishments.util.BattlePerms;
 import com.lducks.battlepunishments.util.BattleSettings;
 import com.lducks.battlepunishments.util.CoordsCon;
 import com.lducks.battlepunishments.util.TimeConverter;
+import com.lducks.battlepunishments.util.webrequests.UpdateDatabase;
 
 /**
  * 
@@ -386,6 +387,12 @@ public class FileBattlePlayer implements BattlePlayer {
 
 		for(String aip : ips)
 			new ConsoleMessage("Adding IP "+aip+" to player "+getRealName());
+		
+		try {
+			UpdateDatabase.updateIP(BattlePunishments.createBattlePlayer(name), ip);
+		} catch (Exception e) {
+			new DumpFile("addIP", e, "Error adding IP to website via flatfile");
+		}
 	}
 
 	public List<String> getIPList(){

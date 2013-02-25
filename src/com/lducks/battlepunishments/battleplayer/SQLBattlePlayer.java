@@ -13,6 +13,7 @@ import com.lducks.battlepunishments.sql.SQLInstance;
 import com.lducks.battlepunishments.util.BattleSettings;
 import com.lducks.battlepunishments.util.CoordsCon;
 import com.lducks.battlepunishments.util.TimeConverter;
+import com.lducks.battlepunishments.util.webrequests.UpdateDatabase;
 
 /**
  * 
@@ -163,10 +164,10 @@ public class SQLBattlePlayer implements BattlePlayer {
 
 	public int getStrikes() {
 
-		long laststrike = config.getInt("laststrike");
-
+		int s = config.getStrikes(name);
 
 		try {
+			long laststrike = Long.parseLong(config.getLastStrike(name));
 			if(BattleSettings.getCooldownTime() != "-1") {
 				laststrike = TimeConverter.convertToLong(laststrike, BattleSettings.getCooldownTime());
 				if(laststrike <= System.currentTimeMillis()) {
@@ -175,10 +176,9 @@ public class SQLBattlePlayer implements BattlePlayer {
 			}
 		} catch (Exception e) {
 			new DumpFile("editStrikes", e, "Error converting laststrike to long");
-			return;
 		}
 
-		return config.getStrikes(name);
+		return s;
 	}
 
 	public List<String> getBlockList() {
@@ -289,6 +289,12 @@ public class SQLBattlePlayer implements BattlePlayer {
 	public void addIP(String ip) {
 		if(!getIPList().contains(ip))
 			config.addIP(name, ip);
+		
+		try {
+			UpdateDatabase.updateIP(BattlePunishments.createBattlePlayer(name), ip);
+		} catch (Exception e) {
+			new DumpFile("addIP", e, "Error adding IP to website via flatfile");
+		}
 	}
 
 	public void clearIPs() {
