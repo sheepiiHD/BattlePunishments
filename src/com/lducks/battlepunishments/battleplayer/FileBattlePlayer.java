@@ -507,15 +507,13 @@ public class FileBattlePlayer implements BattlePlayer {
 		try {
 			if(BattleSettings.getCooldownTime() != "-1") {
 				laststrike = TimeConverter.convertToLong(laststrike, BattleSettings.getCooldownTime());
+				if(laststrike <= System.currentTimeMillis()) {
+					s = s - BattleSettings.getCooldownDrop();
+				}
 			}
 		} catch (Exception e) {
 			new DumpFile("editStrikes", e, "Error converting laststrike to long");
 			return;
-		}
-
-
-		if(laststrike <= System.currentTimeMillis()) {
-			s = s - BattleSettings.getCooldownDrop();
 		}
 
 		s = strikes + s;
