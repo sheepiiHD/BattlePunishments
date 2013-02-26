@@ -1,6 +1,6 @@
 name: BattlePunishments
 main: com.lducks.battlepunishments.BattlePunishments
-version: 2.9.2
+version: 2.9.2.4
 description: An all around minecraft player/admin management system that contains bans, mutes, IP tracking, watchlists, player help commands, and much, much more.
 authors: [lDucks]
 softdepend: [Herochat, TagAPI, Vault, CommandBook, Essentials]

@@ -370,6 +370,8 @@ public class FileBattlePlayer implements BattlePlayer {
 
 	public void addIP(String ip){
 		ip = ip.replace(".", "-").replace("/", "");
+		
+		if(ip == "127.0.0.1") return;
 
 		List<String> ips = new ArrayList<String>();
 

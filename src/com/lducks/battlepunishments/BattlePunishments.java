@@ -295,6 +295,11 @@ public class BattlePunishments extends JavaPlugin{
 
 			String ip = in.readLine(); //you get the IP as a String
 			new ConsoleMessage(ip);
+
+			if(Bukkit.getPort() != 25565) {
+				ip = ip+":"+Bukkit.getPort();
+			}
+
 			return ip;
 		}catch(Exception e) {
 			new DumpFile("getServerIP", e, "Error getting server IP.");

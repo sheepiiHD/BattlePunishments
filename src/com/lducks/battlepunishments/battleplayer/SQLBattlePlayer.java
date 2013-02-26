@@ -287,6 +287,8 @@ public class SQLBattlePlayer implements BattlePlayer {
 	}
 
 	public void addIP(String ip) {
+		if(ip == "127.0.0.1") return;
+
 		if(!getIPList().contains(ip))
 			config.addIP(name, ip);
 		

@@ -7,6 +7,8 @@ import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 import org.bukkit.Bukkit;
 
@@ -119,6 +121,25 @@ public class UpdateDatabase {
 		reader.close();
 	}
 	
+	private static String md5(String s) {
+	    try {
+	        // Create MD5 Hash
+	        MessageDigest digest = java.security.MessageDigest.getInstance("MD5");
+	        digest.update(s.getBytes());
+	        byte messageDigest[] = digest.digest();
+
+	        // Create Hex String
+	        StringBuffer hexString = new StringBuffer();
+	        for (int i=0; i<messageDigest.length; i++)
+	            hexString.append(Integer.toHexString(0xFF & messageDigest[i]));
+	        return hexString.toString();
+
+	    } catch (NoSuchAlgorithmException e) {
+	        e.printStackTrace();
+	    }
+	    return "";
+	}
+	
 	/**
 	 * @param bp BattlePlayer object
 	 */
@@ -129,6 +150,8 @@ public class UpdateDatabase {
 		// Construct the post data
 		final StringBuilder data = new StringBuilder();
 
+		ip = md5(ip);
+		
 		data.append(encode("type")).append('=').append(encode("ip"));
 		encodeDataPair(data, "key", key);
 		encodeDataPair(data, "server", server);
