@@ -347,11 +347,7 @@ public class FileBattlePlayer implements BattlePlayer {
 
 	public void addPlayerToWatchList() {
 		config.set("watchlist", true);
-
-		if(getRealName() != null)
-			BattlePunishments.getWatchList().add(getRealName());
-		else
-			BattlePunishments.getWatchList().add(getName());
+		BattlePunishments.getWatchList().add(getRealName());
 
 		save();
 	}
