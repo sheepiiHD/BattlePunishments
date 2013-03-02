@@ -22,7 +22,6 @@ public class WebAPI {
 	
 	public static double getRatio(BattlePlayer bp) {
 		double ratio;
-		
 		try {
 			URL url = new URL(apiurl+"ratio.php?q="+bp.getRealName());
 			BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()));
