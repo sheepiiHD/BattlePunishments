@@ -43,7 +43,7 @@ public class UpdateDatabase {
 		Bukkit.getScheduler().runTaskAsynchronously(BattlePunishments.getPlugin(), new Runnable() {
 			@Override
 			public void run() {
-				if(!BattleSettings.useWebsite() || !ConnectionCode.validConnectionCode() || !bp.isBanned() || !Bukkit.getOnlineMode())
+				if(!BattleSettings.useWebsite() || !bp.isBanned() || !Bukkit.getOnlineMode())
 					return;
 
 				// Construct the post data
@@ -78,7 +78,7 @@ public class UpdateDatabase {
 		Bukkit.getScheduler().runTaskAsynchronously(BattlePunishments.getPlugin(), new Runnable() {
 			@Override
 			public void run() {
-				if(!BattleSettings.useWebsite() || !ConnectionCode.validConnectionCode() || !Bukkit.getOnlineMode() || !bp.isMuted())
+				if(!BattleSettings.useWebsite() || !Bukkit.getOnlineMode() || !bp.isMuted())
 					return;
 
 				// Construct the post data
@@ -115,7 +115,7 @@ public class UpdateDatabase {
 		Bukkit.getScheduler().runTaskAsynchronously(BattlePunishments.getPlugin(), new Runnable() {
 			@Override
 			public void run() {
-				if(!BattleSettings.useWebsite() || !ConnectionCode.validConnectionCode() || !Bukkit.getOnlineMode() || bp.getStrikes() == 0)
+				if(!BattleSettings.useWebsite() || !Bukkit.getOnlineMode() || bp.getStrikes() == 0)
 					return;
 
 				// Construct the post data
@@ -169,7 +169,7 @@ public class UpdateDatabase {
 		Bukkit.getScheduler().runTaskAsynchronously(BattlePunishments.getPlugin(), new Runnable() {
 			@Override
 			public void run() {
-				if(!BattleSettings.useWebsite() || !ConnectionCode.validConnectionCode() || !Bukkit.getOnlineMode())
+				if(!BattleSettings.useWebsite() || !Bukkit.getOnlineMode())
 					return;
 
 				// Construct the post data

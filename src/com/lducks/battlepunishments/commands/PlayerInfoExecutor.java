@@ -16,7 +16,6 @@ import com.lducks.battlepunishments.commands.blockcommands.BlockListExecutor;
 import com.lducks.battlepunishments.util.BattlePerms;
 import com.lducks.battlepunishments.util.BattleSettings;
 import com.lducks.battlepunishments.util.TimeConverter;
-import com.lducks.battlepunishments.util.webrequests.WebAPI;
 
 /**
  * 
@@ -114,7 +113,6 @@ public class PlayerInfoExecutor extends CustomCommandExecutor{
 		}
 
 		if(BattleSettings.useWebsite()) {
-			sender.sendMessage(GREEN + "Ratio: " + YELLOW + WebAPI.getRatio(bp));
 			sender.sendMessage(GREEN + "Profile: " + YELLOW + "http://bcpvp.net/profile/"+bp.getRealName());
 		}
 		

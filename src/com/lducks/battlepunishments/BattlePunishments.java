@@ -30,6 +30,7 @@ import com.lducks.battlepunishments.listeners.MiscListener;
 import com.lducks.battlepunishments.listeners.SignColors;
 import com.lducks.battlepunishments.listeners.SneakListener;
 import com.lducks.battlepunishments.listeners.TagAPIListener;
+import com.lducks.battlepunishments.listeners.UrlCheckListener;
 import com.lducks.battlepunishments.listeners.chat.ChatListener;
 import com.lducks.battlepunishments.listeners.chat.HeroChatListener;
 import com.lducks.battlepunishments.listeners.chat.StalkListener;
@@ -51,6 +52,7 @@ import com.lducks.battlepunishments.util.webrequests.PluginUpdater;
 
 public class BattlePunishments extends JavaPlugin{
 
+	private static String serverip;
 	private static Logger log = Logger.getLogger("Minecraft");
 	private static String name, version;
 	private static boolean hasupdates;
@@ -92,6 +94,11 @@ public class BattlePunishments extends JavaPlugin{
 		BattleSettings bs = new BattleSettings();
 		bs.setConfig(new File(getPath()+"/config.yml"));
 
+		if(BattleSettings.useWebsite()) {
+			ConnectionCode.runValidConnection(null);
+			this.getServer().getPluginManager().registerEvents(new UrlCheckListener(), this);
+		}
+		
 		try {
 			Metrics.runScripts();
 		} catch (Exception e) {
@@ -288,22 +295,27 @@ public class BattlePunishments extends JavaPlugin{
 	 * @return server IP of current server
 	 */
 	public static String getServerIP(){
-		try {
-			URL whatismyip = new URL("http://BattlePunishments.net/grabbers/ip.php");
-			BufferedReader in = new BufferedReader(new InputStreamReader(
-					whatismyip.openStream()));
+		Bukkit.getScheduler().runTaskAsynchronously(BattlePunishments.getPlugin(), new Runnable() {
+			public void run() {
+				try {
 
-			String ip = in.readLine(); //you get the IP as a String
-			new ConsoleMessage(ip);
+					URL whatismyip = new URL("http://BattlePunishments.net/grabbers/ip.php");
+					BufferedReader in = new BufferedReader(new InputStreamReader(
+							whatismyip.openStream()));
 
-			if(Bukkit.getPort() != 25565) {
-				ip = ip+":"+Bukkit.getPort();
+					String ip = in.readLine(); //you get the IP as a String
+					new ConsoleMessage(ip);
+
+					if(Bukkit.getPort() != 25565) {
+						ip = ip+":"+Bukkit.getPort();
+					}
+
+					serverip = ip;
+					
+				}catch(Exception e) {return;}
 			}
+		});
 
-			return ip;
-		}catch(Exception e) {
-			new DumpFile("getServerIP", e, "Error getting server IP.");
-			return null;
-		}
+		return serverip;
 	}
 }

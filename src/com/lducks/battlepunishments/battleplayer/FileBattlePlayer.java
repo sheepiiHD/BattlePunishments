@@ -260,7 +260,7 @@ public class FileBattlePlayer implements BattlePlayer {
 
 	public void unban(){
 		config.set("ban", null);
-		config.set("ipbanned", false);
+		config.set("ipbanned", null);
 		Bukkit.getOfflinePlayer(name).setBanned(false);
 		save();
 	}

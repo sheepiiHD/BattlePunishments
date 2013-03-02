@@ -5,10 +5,12 @@ import java.io.File;
 import java.io.InputStreamReader;
 import java.net.URL;
 
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import com.lducks.battlepunishments.BattlePunishments;
 import com.lducks.battlepunishments.debugging.ConsoleMessage;
+import com.lducks.battlepunishments.util.events.UrlCheckEvent;
 
 /**
  * 
@@ -20,6 +22,7 @@ public class ConnectionCode {
 
 	private static YamlConfiguration config;
 	private static File f;
+	private static boolean valid;
 
 	/**
 	 * 
@@ -80,24 +83,49 @@ public class ConnectionCode {
 	 * Checks servers connection code is valid
 	 */
 	public static boolean validConnectionCode() {
-		try {
-			URL url = new URL("http://www.BattlePunishments.net/grabbers/register.php?server="+BattlePunishments.getServerIP()
-					+"&connection="
-					+getConnectionCode());
-			BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()));
+		runValidConnection(null);
+		return valid;
+	}
+	
+	public static void runValidConnection(final String name) {
+		Bukkit.getScheduler().runTaskAsynchronously(BattlePunishments.getPlugin(), new Runnable() {
+			public void run() {
+				try {
+					URL url = new URL("http://www.BattlePunishments.net/grabbers/register.php?server="+BattlePunishments.getServerIP()
+							+"&connection="
+							+getConnectionCode());
+					BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()));
 
-			String line = reader.readLine();
+					final String line = reader.readLine();
 
-			reader.close();
-			
-			if(BattlePunishments.getServerIP().equalsIgnoreCase(line)) {
-				return true;
+					reader.close();
+
+
+					final boolean validconnection;
+					
+					if(BattlePunishments.getServerIP().equalsIgnoreCase(line)) {
+						validconnection = true;
+					}else {
+						validconnection = false;
+					}
+					
+					Bukkit.getScheduler().scheduleSyncDelayedTask(BattlePunishments.getPlugin(), new Runnable() {
+						@Override
+						public void run() {
+							UrlCheckEvent event = new UrlCheckEvent(validconnection, name);
+							event.callEvent();
+						}
+					});
+
+				}catch(Exception e) {return;}
 			}
-
-			return false;
-		}catch(Exception e) {
-			return false;
-		}
+		});
 	}
 
+	/**
+	 * @param valid
+	 */
+	public static void setValid(boolean v) {
+		valid = v;
+	}
 }

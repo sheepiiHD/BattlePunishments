@@ -7,10 +7,7 @@ import static org.bukkit.ChatColor.GREEN;
 import static org.bukkit.ChatColor.RED;
 import static org.bukkit.ChatColor.YELLOW;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.URL;
-
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
 import com.lducks.battlepunishments.BattlePunishments;
@@ -19,10 +16,10 @@ import com.lducks.battlepunishments.convertplugins.ConvertEssentials;
 import com.lducks.battlepunishments.convertplugins.ConvertFlatFile;
 import com.lducks.battlepunishments.convertplugins.ConvertVanilla;
 import com.lducks.battlepunishments.debugging.ConsoleMessage;
+import com.lducks.battlepunishments.listeners.UrlCheckListener;
 import com.lducks.battlepunishments.util.BattlePerms;
 import com.lducks.battlepunishments.util.BattleSettings;
 import com.lducks.battlepunishments.util.PluginLoader;
-import com.lducks.battlepunishments.util.battlelogs.BattleLog;
 import com.lducks.battlepunishments.util.webrequests.ConnectionCode;
 
 /**
@@ -43,7 +40,7 @@ public class BattlePunishmentsExecutor extends CustomCommandExecutor {
 	}
 
 	@MCCommand(op=true, cmds={"verify"})
-	public void onVerifyExecute(CommandSender sender, String key) {
+	public void onVerifyExecute(final CommandSender sender, String key) {
 		
 		if(!BattleSettings.useWebsite()) {
 			sender.sendMessage(RED + "You have website set to false in the config file, meaning you can not use the syncing abilities.");
@@ -65,52 +62,33 @@ public class BattlePunishmentsExecutor extends CustomCommandExecutor {
 			return;
 		}
 
-		URL url;
-
-		try {
-			url = new URL("http://www.BattlePunishments.net/grabbers/register.php?connection="+key+
-					"&server="+BattlePunishments.getServerIP());
-		} catch (Exception e) {
-			new ConsoleMessage("Error 3");
-			return;
-		}
-
-		BufferedReader reader;
-		try {
-			reader = new BufferedReader(new InputStreamReader(url.openStream()));
-		} catch (Exception e1) {
-			new ConsoleMessage("Error 5");
-			return;
-		}
-
-		try {
-			new ConsoleMessage("Trying");
-			String line = reader.readLine();
+		ConnectionCode.setKey(key);
+		ConnectionCode.runValidConnection(sender.getName());
+		
+		UrlCheckListener.timerid = Bukkit.getScheduler().scheduleSyncRepeatingTask(BattlePunishments.getPlugin(), new Runnable() {
 			
-			if(line == null) {
-				new ConsoleMessage("Error 6");
-				return;
-			}
+			int i;
 			
-			new ConsoleMessage("Checking "+line+" to "+ip);
-			if(line.equalsIgnoreCase(ip)) {
-				ConnectionCode.setKey(key);
-				sender.sendMessage(GREEN + "Connection verified.");
-				if(BattleSettings.useBattleLog())
-					BattleLog.addMessage("Web connection verified by "+sender.getName()+".");
-				return;
-			}else {
-				sender.sendMessage(RED + "Connection was not verified.");
+			@Override
+			public void run() {
+				
+				if(i > 5) {
+					sender.sendMessage(RED + "Connection timed out");
+					cancelThis();
+					return;
+				}
+				
+				sender.sendMessage(YELLOW + "Verifying....");
+				i++;
 			}
-		} catch (Exception e) {
-			new ConsoleMessage("Error 4");
-			return;
-		}
-
-		sender.sendMessage(DARK_RED + "There was an error registering this server.");
-		new ConsoleMessage("Error 1");
+		}, 0L, 60L);
+				
 	}
 
+	private void cancelThis() {
+		Bukkit.getScheduler().cancelTask(UrlCheckListener.timerid);
+	}
+	
 	@MCCommand(op=true, cmds={"convert"})
 	public void onConvert(CommandSender sender, String type, String plugin) {
 		if(type.equalsIgnoreCase("ban")) {
