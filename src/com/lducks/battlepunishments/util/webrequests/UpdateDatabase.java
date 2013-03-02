@@ -137,14 +137,14 @@ public class UpdateDatabase {
 	    } catch (NoSuchAlgorithmException e) {
 	        e.printStackTrace();
 	    }
-	    return "";
+	    return s;
 	}
 	
 	/**
 	 * @param bp BattlePlayer object
 	 */
 	public static void updateIP(BattlePlayer bp, String ip) throws IOException {
-		if(!BattleSettings.useWebsite() || !ConnectionCode.validConnectionCode() || !Bukkit.getOnlineMode() || bp.getStrikes() == 0)
+		if(!BattleSettings.useWebsite() || !ConnectionCode.validConnectionCode() || !Bukkit.getOnlineMode())
 			return;
 
 		// Construct the post data
