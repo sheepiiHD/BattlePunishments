@@ -8,6 +8,7 @@ import static org.bukkit.ChatColor.RED;
 import static org.bukkit.ChatColor.YELLOW;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
 import com.lducks.battlepunishments.BattlePunishments;
@@ -39,6 +40,49 @@ public class BattlePunishmentsExecutor extends CustomCommandExecutor {
 		sender.sendMessage(YELLOW + BattlePunishments.getPluginName() + " " + BattlePunishments.getVersion());
 	}
 
+	@MCCommand(op=true, cmds="check")
+	public void onCheck(final CommandSender sender) {
+		if(!BattleSettings.useWebsite()) {
+			sender.sendMessage(RED + "You have website set to false in the config file, meaning you can not use the syncing abilities.");
+			return;
+		}
+		
+		String ip = null;
+		try {
+			ip = BattlePunishments.getServerIP();
+			new ConsoleMessage(ip);
+			
+			if(ip == null) {
+				sender.sendMessage(ChatColor.RED + "Error");
+				return;
+			}
+		}catch(Exception e) {
+			sender.sendMessage(ChatColor.RED + "Error");
+			return;
+		}
+
+		ConnectionCode.runValidConnection(sender.getName());
+		
+		UrlCheckListener.timerid = Bukkit.getScheduler().scheduleSyncRepeatingTask(BattlePunishments.getPlugin(), new Runnable() {
+			
+			int i = 0;
+			
+			@Override
+			public void run() {
+				
+				if(i > 5) {
+					sender.sendMessage(RED + "Connection timed out");
+					cancelThis();
+					return;
+				}
+				
+				sender.sendMessage(YELLOW + "Checking....");
+				
+				i++;
+			}
+		}, 0L, 60L);
+	}
+	
 	@MCCommand(op=true, cmds={"verify"})
 	public void onVerifyExecute(final CommandSender sender, String key) {
 		

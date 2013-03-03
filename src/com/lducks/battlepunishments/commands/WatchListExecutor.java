@@ -30,7 +30,7 @@ public class WatchListExecutor extends CustomCommandExecutor{
 		sendWatchlist(sender);
 	}
 	
-	@MCCommand(perm=BattlePerms.WATCHLIST, inGame=false)
+	@MCCommand(cmds="clear", perm=BattlePerms.WATCHLIST, inGame=false)
 	public void onWatchListClear(CommandSender sender) {
 		wlc.clear();
 		sender.sendMessage(RED + "Watch list has been cleared.");

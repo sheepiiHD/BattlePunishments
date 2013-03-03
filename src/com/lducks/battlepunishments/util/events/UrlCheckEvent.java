@@ -8,10 +8,12 @@ package com.lducks.battlepunishments.util.events;
 public class UrlCheckEvent extends BPEvent{
 	final boolean valid;
 	final String name;
+	final long start;
 
 	public UrlCheckEvent(boolean valid, String name) {
 		this.valid = valid;
 		this.name = name;
+		this.start = System.currentTimeMillis();
 	}
 
 	public boolean getValid(){
@@ -20,5 +22,9 @@ public class UrlCheckEvent extends BPEvent{
 	
 	public String getPlayerName(){
 		return name;
+	}
+	
+	public long getStart() {
+		return start;
 	}
 }

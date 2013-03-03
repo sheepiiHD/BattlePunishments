@@ -97,8 +97,10 @@ public class RegisterItems {
 		if(BattleSettings.getRegisteredCommands().contains("tpr"))
 			BattlePunishments.getPlugin().getCommand("tpr").setExecutor(new TeleportRandomExecutor());
 
-		if(BattleSettings.getRegisteredCommands().contains("watchlist"))
+		if(BattleSettings.getRegisteredCommands().contains("watchlist")) {
 			BattlePunishments.getPlugin().getCommand("watchlist").setExecutor(new WatchListExecutor());
+			registerWatchList();
+		}
 
 		BattlePunishments.getPlugin().getCommand("editstk").setExecutor(new StrikesExecutor());
 
@@ -139,10 +141,9 @@ public class RegisterItems {
 
 	
 	/**
-	 * @deprecated Just get all the config settings through BattleSettings
+	 * Registers the watch list
 	 */
-	@Deprecated
-	public static void configSettings() {
+	public static void registerWatchList() {
 		WatchListController wlc = BattlePunishments.getWatchListController();
 		List<String> wl = new ArrayList<String>();
 

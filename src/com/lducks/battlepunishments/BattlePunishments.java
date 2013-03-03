@@ -96,6 +96,7 @@ public class BattlePunishments extends JavaPlugin{
 
 		if(BattleSettings.useWebsite()) {
 			ConnectionCode.runValidConnection(null);
+			getServerIP();
 			this.getServer().getPluginManager().registerEvents(new UrlCheckListener(), this);
 		}
 		

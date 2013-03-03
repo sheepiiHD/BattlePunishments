@@ -29,6 +29,8 @@ import com.lducks.battlepunishments.util.webrequests.PluginUpdater;
 
 public class LoginListener implements Listener{
 
+	public static boolean checkvalid = false;
+	
 	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent event) {
 		Player p = event.getPlayer();
@@ -41,7 +43,7 @@ public class LoginListener implements Listener{
 						YELLOW + "tiny.cc/BattlePunishments");
 			}
 
-			if(BattleSettings.useWebsite()&& !ConnectionCode.validConnectionCode()) {
+			if(BattleSettings.useWebsite()&& !ConnectionCode.validConnectionCode() && checkvalid) {
 				p.sendMessage(BLUE + "This server is not registered on http://BattlePunishments.net! " +
 						"Check it out to see what features you can get by signing up!");
 			}

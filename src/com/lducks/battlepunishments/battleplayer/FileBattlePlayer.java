@@ -354,6 +354,7 @@ public class FileBattlePlayer implements BattlePlayer {
 
 	public void removePlayerFromWatchList() {
 		config.set("watchlist", false);
+		BattlePunishments.getWatchList().remove(getRealName());
 		save();
 	}
 

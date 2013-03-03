@@ -28,17 +28,25 @@ public class UrlCheckListener implements Listener{
 		if(timerid != -2) {
 			Bukkit.getScheduler().cancelTask(timerid);
 			timerid = -2;
-			
+
 			Player p = Bukkit.getPlayer(event.getPlayerName());
 			if(p != null) {
-				if(valid)
+				if(valid) {
 					p.sendMessage(ChatColor.GREEN + "Connection verified");
-				else
+					
+					long time = System.currentTimeMillis() - event.getStart();
+					p.sendMessage(ChatColor.GREEN + "System took "+ ChatColor.YELLOW + time 
+							+ ChatColor.GREEN + " millisecond(s) to connect.");
+					
+				}else
 					p.sendMessage(ChatColor.RED + "Connection could not be verified");
 			}
 		}
-		
+
 		ConnectionCode.setValid(valid);
+
+		if(valid)
+			LoginListener.checkvalid = true;
 	}
-	
+
 }

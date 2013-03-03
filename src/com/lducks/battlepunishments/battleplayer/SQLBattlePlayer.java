@@ -235,8 +235,7 @@ public class SQLBattlePlayer implements BattlePlayer {
 	public void addPlayerToWatchList() {
 		List<String> wl = BattlePunishments.getWatchList();
 		if(!wl.contains("name")) {
-			wl.add(name);
-			BattlePunishments.setWatchList(wl);
+			BattlePunishments.getWatchList().remove(getRealName());
 			config.addPlayerToWatchList(name);
 		}
 	}
