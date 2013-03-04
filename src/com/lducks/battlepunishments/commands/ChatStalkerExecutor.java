@@ -20,7 +20,7 @@ public class ChatStalkerExecutor extends CustomCommandExecutor{
 	
 	@MCCommand(perm=BattlePerms.CHATSTALKER, cmds= {"stop"})
 	public void onExecuteStop(CommandSender sender, Player p) {
-		if(listen.containsKey(sender.getName())) {
+		if(listen.containsKey(sender.getName().toLowerCase())) {
 			listen.remove(sender.getName().toLowerCase());
 			sender.sendMessage(YELLOW + "You are no longer listening to "+ ITALIC + p.getName());
 		}else {

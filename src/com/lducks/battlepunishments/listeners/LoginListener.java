@@ -63,7 +63,7 @@ public class LoginListener implements Listener{
 		String nn = bp.getNickname();
 
 		if(nn != null) {
-			p.setDisplayName(ChatColor.RESET + nn);
+			p.setDisplayName(ChatColor.RESET + nn + ChatColor.RESET);
 			p.setPlayerListName(nn);
 			new ConsoleMessage("Giving "+p.getName()+" a colored name.");
 		}

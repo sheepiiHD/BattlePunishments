@@ -69,7 +69,7 @@ public class NickNameExecutor extends CustomCommandExecutor{
 
 		if(bp.getPlayer() != null){
 			bp.getPlayer().sendMessage("You are now known as " + n);
-			bp.getPlayer().setDisplayName(ChatColor.RESET + n);
+			bp.getPlayer().setDisplayName(ChatColor.RESET + n + ChatColor.RESET);
 			bp.getPlayer().setPlayerListName(n);
 
 			if(PluginLoader.tagAPIInstalled() && BattleSettings.useTagAPI() == true) {

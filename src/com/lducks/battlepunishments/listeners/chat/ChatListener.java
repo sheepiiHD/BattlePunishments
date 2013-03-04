@@ -36,7 +36,7 @@ public class ChatListener implements Listener{
 			return;
 		}
 
-		if(BattlePunishments.muteall) {
+		if(BattlePunishments.muteall && !bp.getPlayer().hasPermission(BattlePerms.MUTEALL)) {
 			event.setCancelled(true);
 			player.sendMessage(DARK_RED + "The chat is muted!");
 			return;
