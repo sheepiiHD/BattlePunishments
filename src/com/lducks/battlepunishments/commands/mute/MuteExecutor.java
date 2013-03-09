@@ -1,9 +1,8 @@
 package com.lducks.battlepunishments.commands.mute;
 
-import java.io.IOException;
+import static org.bukkit.ChatColor.RED;
 
 import org.bukkit.Bukkit;
-import static org.bukkit.ChatColor.*;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -117,7 +116,7 @@ public class MuteExecutor extends CustomCommandExecutor{
 				try {
 					UpdateDatabase.updateMute(bp);
 					UpdateDatabase.updateStrikes(bp);
-				} catch (IOException e) {
+				} catch (Exception e) {
 					new DumpFile("banPlayer", e, "Updating BP website");
 				}
 				

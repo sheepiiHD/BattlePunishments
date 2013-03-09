@@ -1,7 +1,6 @@
 package com.lducks.battlepunishments.util.webrequests;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
@@ -39,107 +38,60 @@ public class UpdateDatabase {
 	/**
 	 * @param bp BattlePlayer object
 	 */
-	public static void updateBan(final BattlePlayer bp) throws IOException {
-		Bukkit.getScheduler().runTaskAsynchronously(BattlePunishments.getPlugin(), new Runnable() {
-			@Override
-			public void run() {
-				if(!BattleSettings.useWebsite() || !bp.isBanned() || !Bukkit.getOnlineMode())
-					return;
+	public static void updateBan(final BattlePlayer bp) throws Exception {
+		if(!BattleSettings.useWebsite() || !bp.isBanned() || !Bukkit.getOnlineMode())
+			return;
 
-				// Construct the post data
-				final StringBuilder data = new StringBuilder();
+		final StringBuilder data = new StringBuilder();
+		data.append(encode("type")).append('=').append(encode("ban"));
+		encodeDataPair(data, "key", key);
+		encodeDataPair(data, "server", server);
+		encodeDataPair(data, "player", bp.getRealName());
+		encodeDataPair(data, "banner", bp.getBanner());
+		encodeDataPair(data, "reason", bp.getBanReason());
+		encodeDataPair(data, "time", ""+bp.getBanTime());
 
-				try {
-					data.append(encode("type")).append('=').append(encode("ban"));
-					encodeDataPair(data, "key", key);
-					encodeDataPair(data, "server", server);
-					encodeDataPair(data, "player", bp.getRealName());
-					encodeDataPair(data, "banner", bp.getBanner());
-					encodeDataPair(data, "reason", bp.getBanReason());
-					encodeDataPair(data, "time", ""+bp.getBanTime());
-
-					// Create the url
-					URL url = new URL(updateURL+"?"+data.toString());
-					URLConnection connection = url.openConnection();
-
-					BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-					reader.read();
-
-					reader.close();
-				}catch(Exception e) {}
-			}
-		});
+		openUrl(updateURL+"?"+data.toString());
 	}
 
 	/**
 	 * @param bp BattlePlayer object
 	 */
-	public static void updateMute(final BattlePlayer bp) throws IOException {
-		Bukkit.getScheduler().runTaskAsynchronously(BattlePunishments.getPlugin(), new Runnable() {
-			@Override
-			public void run() {
-				if(!BattleSettings.useWebsite() || !Bukkit.getOnlineMode() || !bp.isMuted())
-					return;
+	public static void updateMute(final BattlePlayer bp) throws Exception {
+		if(!BattleSettings.useWebsite() || !Bukkit.getOnlineMode() || !bp.isMuted())
+			return;
 
-				// Construct the post data
-				final StringBuilder data = new StringBuilder();
+		StringBuilder data = new StringBuilder();
+		data.append(encode("type")).append('=').append(encode("mute"));
+		encodeDataPair(data, "key", key);
+		encodeDataPair(data, "server", server);
+		encodeDataPair(data, "player", bp.getRealName());
+		encodeDataPair(data, "muter", bp.getMuter());
+		encodeDataPair(data, "reason", bp.getMuteReason());
+		encodeDataPair(data, "time", ""+bp.getMuteTime());
 
-				try {
-					data.append(encode("type")).append('=').append(encode("mute"));
-					encodeDataPair(data, "key", key);
-					encodeDataPair(data, "server", server);
-					encodeDataPair(data, "player", bp.getRealName());
-					encodeDataPair(data, "muter", bp.getMuter());
-					encodeDataPair(data, "reason", bp.getMuteReason());
-					encodeDataPair(data, "time", ""+bp.getMuteTime());
-
-					// Create the url		
-					URL url = new URL(updateURL+"?"+data.toString());
-					URLConnection connection = url.openConnection();
-
-					BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-					reader.read();
-
-					reader.close();
-				}catch(Exception e) {}
-			}
-		});
+		// Create the url		
+		openUrl(updateURL+"?"+data.toString());
 	}
-
-
 
 	/**
 	 * @param bp BattlePlayer object
 	 */
-	public static void updateStrikes(final BattlePlayer bp) throws IOException {
-		Bukkit.getScheduler().runTaskAsynchronously(BattlePunishments.getPlugin(), new Runnable() {
-			@Override
-			public void run() {
-				if(!BattleSettings.useWebsite() || !Bukkit.getOnlineMode() || bp.getStrikes() == 0)
-					return;
+	public static void updateStrikes(final BattlePlayer bp) throws Exception {
+		if(!BattleSettings.useWebsite() || !Bukkit.getOnlineMode() || bp.getStrikes() == 0)
+			return;
 
-				// Construct the post data
-				final StringBuilder data = new StringBuilder();
+		// Construct the post data
+		final StringBuilder data = new StringBuilder();
 
-				try {
-					data.append(encode("type")).append('=').append(encode("strikes"));
-					encodeDataPair(data, "key", key);
-					encodeDataPair(data, "server", server);
-					encodeDataPair(data, "player", bp.getRealName());
-					encodeDataPair(data, "strikes", ""+bp.getStrikes());
-					encodeDataPair(data, "maxstrikes", ""+BattleSettings.getStrikesMax());
+		data.append(encode("type")).append('=').append(encode("strikes"));
+		encodeDataPair(data, "key", key);
+		encodeDataPair(data, "server", server);
+		encodeDataPair(data, "player", bp.getRealName());
+		encodeDataPair(data, "strikes", ""+bp.getStrikes());
+		encodeDataPair(data, "maxstrikes", ""+BattleSettings.getStrikesMax());
 
-
-					URL url = new URL(updateURL+"?"+data.toString());
-					URLConnection connection = url.openConnection();
-
-					BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-					reader.read();
-
-					reader.close();
-				}catch(Exception e) {}
-			}
-		});
+		openUrl(updateURL+"?"+data.toString());
 	}
 
 	private static String md5(String s) {
@@ -164,26 +116,29 @@ public class UpdateDatabase {
 	/**
 	 * @param bp BattlePlayer object
 	 */
-	public static void updateIP(final BattlePlayer bp, String ipb) throws IOException {
+	public static void updateIP(final BattlePlayer bp, String ipb) throws Exception {
 		final String ip = md5(ipb);
+		if(!BattleSettings.useWebsite() || !Bukkit.getOnlineMode())
+			return;
+
+		// Construct the post data
+		final StringBuilder data = new StringBuilder();
+
+		data.append(encode("type")).append('=').append(encode("ip"));
+		encodeDataPair(data, "key", key);
+		encodeDataPair(data, "server", server);
+		encodeDataPair(data, "player", bp.getRealName());
+		encodeDataPair(data, "ip", ip);
+
+		openUrl(updateURL+"?"+data.toString());
+	}
+
+	private static void openUrl(final String urls) throws Exception {
 		Bukkit.getScheduler().runTaskAsynchronously(BattlePunishments.getPlugin(), new Runnable() {
 			@Override
 			public void run() {
-				if(!BattleSettings.useWebsite() || !Bukkit.getOnlineMode())
-					return;
-
-				// Construct the post data
-				final StringBuilder data = new StringBuilder();
-
 				try {
-					data.append(encode("type")).append('=').append(encode("ip"));
-					encodeDataPair(data, "key", key);
-					encodeDataPair(data, "server", server);
-					encodeDataPair(data, "player", bp.getRealName());
-					encodeDataPair(data, "ip", ip);
-
-
-					URL url = new URL(updateURL+"?"+data.toString());
+					URL url = new URL(urls);
 					URLConnection connection = url.openConnection();
 
 					BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));

@@ -2,7 +2,6 @@ package com.lducks.battlepunishments.commands.ban;
 
 import static org.bukkit.ChatColor.RED;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -165,7 +164,7 @@ public class BanExecutor extends CustomCommandExecutor{
 		try {
 			UpdateDatabase.updateStrikes(bp);
 			UpdateDatabase.updateBan(bp);
-		} catch (IOException e) {
+		} catch (Exception e) {
 			new DumpFile("banPlayer", e, "Updating BP website");
 		}
 		
