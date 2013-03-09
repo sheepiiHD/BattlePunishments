@@ -140,3 +140,7 @@ welcomemessage:
   enabled: true
   format: "&ePlease welcome &4{name} &eto the server!"
   # Currently you can only use the {name} (their name) parameter.
+  
+# Broadcast message format, can only use {message} param
+broadcast:
+  format: "&6[SERVER MESSAGE] {message}"

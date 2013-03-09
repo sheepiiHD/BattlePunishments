@@ -225,7 +225,7 @@ public class BattleSettings {
 	}
 
 	/**
-	 * @return
+	 * @return time Cooldown time
 	 * @throws Exception 
 	 */
 	public static String getCooldownTime() throws Exception {
@@ -233,9 +233,16 @@ public class BattleSettings {
 	}
 
 	/**
-	 * @return
+	 * @return strikes Strikes to drop
 	 */
 	public static int getCooldownDrop() {
 		return config.getInt("strikes.cooldown.amount");
+	}
+
+	/**
+	 * @return format Broadcast Message format
+	 */
+	public static String getBroadcastFormat() {
+		return config.getString("broadcast.format");
 	}
 }

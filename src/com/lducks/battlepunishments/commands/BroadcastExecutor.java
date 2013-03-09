@@ -1,7 +1,8 @@
 package com.lducks.battlepunishments.commands;
 
+import static org.bukkit.ChatColor.RED;
+
 import org.bukkit.Bukkit;
-import static org.bukkit.ChatColor.*;
 import org.bukkit.command.CommandSender;
 
 import com.lducks.battlepunishments.listeners.chat.ChatEditor;
@@ -30,7 +31,10 @@ public class BroadcastExecutor extends CustomCommandExecutor{
 
 		String message = ChatEditor.colorChat(sb.toString());
 
-		Bukkit.getServer().broadcastMessage(GOLD + "[SERVER MESSAGE] " + message);
+		String formatted = BattleSettings.getBroadcastFormat().replace("{message}",message);
+		formatted = ChatEditor.colorChat(formatted);
+		
+		Bukkit.getServer().broadcastMessage(formatted);
 		if(BattleSettings.useBattleLog())
 			BattleLog.addMessage(sender.getName() + " just broadcasted: "+message);
 	}
