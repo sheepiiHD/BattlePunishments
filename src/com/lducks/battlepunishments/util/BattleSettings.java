@@ -221,7 +221,12 @@ public class BattleSettings {
 	 * @return boolean Whether the website option is true or false
 	 */
 	public static boolean useWebsite() {
-		return config.getBoolean("website");
+		boolean b = config.getBoolean("website");
+		
+		if(b)
+			return PluginLoader.webAPIInstalled();
+		else
+			return false;
 	}
 
 	/**

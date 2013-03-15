@@ -2,10 +2,13 @@ package com.lducks.battlepunishments;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.InputStreamReader;
+import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.logging.Logger;
+
+import mc.battleplugins.webapi.object.WebURL;
+import mc.battleplugins.webapi.object.callbacks.URLResponseHandler;
 
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginDescriptionFile;
@@ -30,7 +33,7 @@ import com.lducks.battlepunishments.listeners.MiscListener;
 import com.lducks.battlepunishments.listeners.SignColors;
 import com.lducks.battlepunishments.listeners.SneakListener;
 import com.lducks.battlepunishments.listeners.TagAPIListener;
-import com.lducks.battlepunishments.listeners.UrlCheckListener;
+import com.lducks.battlepunishments.listeners.WebAPIListener;
 import com.lducks.battlepunishments.listeners.chat.ChatListener;
 import com.lducks.battlepunishments.listeners.chat.HeroChatListener;
 import com.lducks.battlepunishments.listeners.chat.StalkListener;
@@ -52,7 +55,7 @@ import com.lducks.battlepunishments.util.webrequests.PluginUpdater;
 
 public class BattlePunishments extends JavaPlugin{
 
-	private static String serverip;
+	private static String serverip = null;
 	private static Logger log = Logger.getLogger("Minecraft");
 	private static String name, version;
 	private static boolean hasupdates;
@@ -95,11 +98,11 @@ public class BattlePunishments extends JavaPlugin{
 		bs.setConfig(new File(getPath()+"/config.yml"));
 
 		if(BattleSettings.useWebsite()) {
-			ConnectionCode.runValidConnection(null);
 			getServerIP();
-			this.getServer().getPluginManager().registerEvents(new UrlCheckListener(), this);
+			log.info("[BattlePunishments] Website enabled!");
+			this.getServer().getPluginManager().registerEvents(new WebAPIListener(), this);
 		}
-		
+
 		try {
 			Metrics.runScripts();
 		} catch (Exception e) {
@@ -296,26 +299,43 @@ public class BattlePunishments extends JavaPlugin{
 	 * @return server IP of current server
 	 */
 	public static String getServerIP(){
-		Bukkit.getScheduler().runTaskAsynchronously(BattlePunishments.getPlugin(), new Runnable() {
-			public void run() {
+		if(serverip == null) {
+
+			if(Bukkit.getServer().getIp() == null)
+				serverip = Bukkit.getServer().getIp();
+			else {
+				URL whatismyip;
 				try {
+					whatismyip = new URL("http://BattlePunishments.net/grabbers/ip.php");
+				} catch (Exception e) {
+					new DumpFile("getServerIP", e, "Invalid URL");
+					return null;
+				}
 
-					URL whatismyip = new URL("http://BattlePunishments.net/grabbers/ip.php");
-					BufferedReader in = new BufferedReader(new InputStreamReader(
-							whatismyip.openStream()));
+				WebURL url = new WebURL(whatismyip);
 
-					String ip = in.readLine(); //you get the IP as a String
-					new ConsoleMessage(ip);
+				url.getPage(new URLResponseHandler() {
+					@Override
+					public void validResponse(final BufferedReader br) throws IOException {
+						String ip = br.readLine();
 
-					if(Bukkit.getPort() != 25565) {
-						ip = ip+":"+Bukkit.getPort();
+						if(ip == null)
+							throw new NullPointerException();
+
+						BattlePunishments.serverip = ip;
+						ConnectionCode.validConnectionCode(null);
 					}
 
-					serverip = ip;
-					
-				}catch(Exception e) {return;}
+					@Override
+					public void invalidResponse(Exception e) {
+						new DumpFile("getServerIP", e, "Invalid response");
+					}
+				});
 			}
-		});
+		}
+
+		if(Bukkit.getPort() != 25565)
+			serverip = serverip+":"+Bukkit.getPort();
 
 		return serverip;
 	}

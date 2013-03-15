@@ -46,4 +46,11 @@ public class PluginLoader {
 	public static boolean cmdBookInstalled() {
 		return (Bukkit.getPluginManager().getPlugin("CommandBook") != null);
 	}
+
+	/**
+	 * @return boolean WebAPI is installed
+	 */
+	public static boolean webAPIInstalled() {
+		return (Bukkit.getPluginManager().getPlugin("WebAPI") != null);
+	}
 }

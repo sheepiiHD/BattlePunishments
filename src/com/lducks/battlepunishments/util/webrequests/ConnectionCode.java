@@ -1,16 +1,15 @@
 package com.lducks.battlepunishments.util.webrequests;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.InputStreamReader;
 import java.net.URL;
 
-import org.bukkit.Bukkit;
+import mc.battleplugins.webapi.object.WebURL;
+
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import com.lducks.battlepunishments.BattlePunishments;
 import com.lducks.battlepunishments.debugging.ConsoleMessage;
-import com.lducks.battlepunishments.util.events.UrlCheckEvent;
+import com.lducks.battlepunishments.debugging.DumpFile;
 
 /**
  * 
@@ -78,48 +77,26 @@ public class ConnectionCode {
 	}
 
 	/**
-	 * 
-	 * @return boolean
-	 * Checks servers connection code is valid
+	 * @param caller Person calling the request
+	 * @return boolean Is server's connection code is valid
 	 */
-	public static boolean validConnectionCode() {
-		runValidConnection(null);
+	public static boolean validConnectionCode(String caller) {
+		WebURL url;
+		try {
+			url = new WebURL(new URL("http://www.BattlePunishments.net/grabbers/register.php"));
+		} catch (Exception e) {
+			new DumpFile("validConnectionCode", e, "Error validating connection code");
+			setValid(false);
+			return false;
+		}
+
+		if(BattlePunishments.getServerIP() != null)
+			url.addData("server", BattlePunishments.getServerIP());
+		
+		url.addData("key", getConnectionCode());
+		url.sendData();
+
 		return valid;
-	}
-	
-	public static void runValidConnection(final String name) {
-		Bukkit.getScheduler().runTaskAsynchronously(BattlePunishments.getPlugin(), new Runnable() {
-			public void run() {
-				try {
-					URL url = new URL("http://www.BattlePunishments.net/grabbers/register.php?server="+BattlePunishments.getServerIP()
-							+"&connection="
-							+getConnectionCode());
-					BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()));
-
-					final String line = reader.readLine();
-
-					reader.close();
-
-
-					final boolean validconnection;
-					
-					if(BattlePunishments.getServerIP().equalsIgnoreCase(line)) {
-						validconnection = true;
-					}else {
-						validconnection = false;
-					}
-					
-					Bukkit.getScheduler().scheduleSyncDelayedTask(BattlePunishments.getPlugin(), new Runnable() {
-						@Override
-						public void run() {
-							UrlCheckEvent event = new UrlCheckEvent(validconnection, name);
-							event.callEvent();
-						}
-					});
-
-				}catch(Exception e) {return;}
-			}
-		});
 	}
 
 	/**

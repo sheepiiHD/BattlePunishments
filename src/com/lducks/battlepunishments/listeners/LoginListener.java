@@ -43,7 +43,7 @@ public class LoginListener implements Listener{
 						YELLOW + "tiny.cc/BattlePunishments");
 			}
 
-			if(BattleSettings.useWebsite()&& !ConnectionCode.validConnectionCode() && checkvalid) {
+			if(BattleSettings.useWebsite()&& !ConnectionCode.validConnectionCode(null) && checkvalid) {
 				p.sendMessage(BLUE + "This server is not registered on http://BattlePunishments.net! " +
 						"Check it out to see what features you can get by signing up!");
 			}

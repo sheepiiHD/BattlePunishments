@@ -1,13 +1,10 @@
 package com.lducks.battlepunishments.util.webrequests;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.net.URL;
-import java.net.URLConnection;
-import java.net.URLEncoder;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+
+import mc.battleplugins.webapi.object.WebURL;
 
 import org.bukkit.Bukkit;
 
@@ -25,73 +22,61 @@ public class UpdateDatabase {
 
 	private static String updateURL = "http://BattlePunishments.net/grabbers/updategrabber.php";
 	private final static String key = ConnectionCode.getConnectionCode();
-	private final static String server = BattlePunishments.getServerIP();
-
-	private static void encodeDataPair(final StringBuilder buffer, final String key, final String value) throws UnsupportedEncodingException {
-		buffer.append('&').append(encode(key)).append('=').append(encode(value));
-	}
-
-	private static String encode(final String text) throws UnsupportedEncodingException {
-		return URLEncoder.encode(text, "UTF-8");
-	}
 
 	/**
 	 * @param bp BattlePlayer object
 	 */
 	public static void updateBan(final BattlePlayer bp) throws Exception {
-		if(!BattleSettings.useWebsite() || !bp.isBanned() || !Bukkit.getOnlineMode())
+		if(!BattleSettings.useWebsite() || !bp.isBanned() || !Bukkit.getOnlineMode() || BattlePunishments.getServerIP() == null)
 			return;
 
-		final StringBuilder data = new StringBuilder();
-		data.append(encode("type")).append('=').append(encode("ban"));
-		encodeDataPair(data, "key", key);
-		encodeDataPair(data, "server", server);
-		encodeDataPair(data, "player", bp.getRealName());
-		encodeDataPair(data, "banner", bp.getBanner());
-		encodeDataPair(data, "reason", bp.getBanReason());
-		encodeDataPair(data, "time", ""+bp.getBanTime());
-
-		openUrl(updateURL+"?"+data.toString());
+		WebURL url = new WebURL(new URL(updateURL));
+		url.addData("type","ban");
+		url.addData("key", key);
+		url.addData("server", BattlePunishments.getServerIP());
+		url.addData("player", bp.getRealName());
+		url.addData("banner", bp.getBanner());
+		url.addData("reason", bp.getBanReason());
+		url.addData("time", ""+bp.getBanTime());
+		
+		url.sendData();
 	}
 
 	/**
 	 * @param bp BattlePlayer object
 	 */
 	public static void updateMute(final BattlePlayer bp) throws Exception {
-		if(!BattleSettings.useWebsite() || !Bukkit.getOnlineMode() || !bp.isMuted())
+		if(!BattleSettings.useWebsite() || !Bukkit.getOnlineMode() || !bp.isMuted() || BattlePunishments.getServerIP() == null)
 			return;
 
-		StringBuilder data = new StringBuilder();
-		data.append(encode("type")).append('=').append(encode("mute"));
-		encodeDataPair(data, "key", key);
-		encodeDataPair(data, "server", server);
-		encodeDataPair(data, "player", bp.getRealName());
-		encodeDataPair(data, "muter", bp.getMuter());
-		encodeDataPair(data, "reason", bp.getMuteReason());
-		encodeDataPair(data, "time", ""+bp.getMuteTime());
+		WebURL url = new WebURL(new URL(updateURL));
+		url.addData("type","mute");
+		url.addData("key", key);
+		url.addData("server", BattlePunishments.getServerIP());
+		url.addData("player", bp.getRealName());
+		url.addData("muter", bp.getMuter());
+		url.addData("reason", bp.getMuteReason());
+		url.addData("time", ""+bp.getMuteTime());
 
-		// Create the url		
-		openUrl(updateURL+"?"+data.toString());
+		url.sendData();
 	}
 
 	/**
 	 * @param bp BattlePlayer object
 	 */
 	public static void updateStrikes(final BattlePlayer bp) throws Exception {
-		if(!BattleSettings.useWebsite() || !Bukkit.getOnlineMode() || bp.getStrikes() == 0)
+		if(!BattleSettings.useWebsite() || !Bukkit.getOnlineMode() || bp.getStrikes() == 0 || BattlePunishments.getServerIP() == null)
 			return;
 
-		// Construct the post data
-		final StringBuilder data = new StringBuilder();
-
-		data.append(encode("type")).append('=').append(encode("strikes"));
-		encodeDataPair(data, "key", key);
-		encodeDataPair(data, "server", server);
-		encodeDataPair(data, "player", bp.getRealName());
-		encodeDataPair(data, "strikes", ""+bp.getStrikes());
-		encodeDataPair(data, "maxstrikes", ""+BattleSettings.getStrikesMax());
-
-		openUrl(updateURL+"?"+data.toString());
+		WebURL url = new WebURL(new URL(updateURL));
+		url.addData("type","strikes");
+		url.addData("key", key);
+		url.addData("server", BattlePunishments.getServerIP());
+		url.addData("player", bp.getRealName());
+		url.addData("strikes", ""+bp.getStrikes());
+		url.addData("maxstrikes", ""+BattleSettings.getStrikesMax());
+		
+		url.sendData();
 	}
 
 	private static String md5(String s) {
@@ -118,35 +103,16 @@ public class UpdateDatabase {
 	 */
 	public static void updateIP(final BattlePlayer bp, String ipb) throws Exception {
 		final String ip = md5(ipb);
-		if(!BattleSettings.useWebsite() || !Bukkit.getOnlineMode())
+		if(!BattleSettings.useWebsite() || !Bukkit.getOnlineMode() || BattlePunishments.getServerIP() == null)
 			return;
 
-		// Construct the post data
-		final StringBuilder data = new StringBuilder();
-
-		data.append(encode("type")).append('=').append(encode("ip"));
-		encodeDataPair(data, "key", key);
-		encodeDataPair(data, "server", server);
-		encodeDataPair(data, "player", bp.getRealName());
-		encodeDataPair(data, "ip", ip);
-
-		openUrl(updateURL+"?"+data.toString());
-	}
-
-	private static void openUrl(final String urls) throws Exception {
-		Bukkit.getScheduler().runTaskAsynchronously(BattlePunishments.getPlugin(), new Runnable() {
-			@Override
-			public void run() {
-				try {
-					URL url = new URL(urls);
-					URLConnection connection = url.openConnection();
-
-					BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-					reader.read();
-
-					reader.close();
-				}catch(Exception e) {}
-			}
-		});
+		WebURL url = new WebURL(new URL(updateURL));
+		url.addData("type","ip");
+		url.addData("key", key);
+		url.addData("server", BattlePunishments.getServerIP());
+		url.addData("player", bp.getRealName());
+		url.addData("ip", ip);
+		
+		url.sendData();
 	}
 }

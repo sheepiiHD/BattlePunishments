@@ -16,8 +16,8 @@ import com.lducks.battlepunishments.convertplugins.ConvertCommandBook;
 import com.lducks.battlepunishments.convertplugins.ConvertEssentials;
 import com.lducks.battlepunishments.convertplugins.ConvertFlatFile;
 import com.lducks.battlepunishments.convertplugins.ConvertVanilla;
-import com.lducks.battlepunishments.debugging.ConsoleMessage;
-import com.lducks.battlepunishments.listeners.UrlCheckListener;
+import com.lducks.battlepunishments.debugging.DumpFile;
+import com.lducks.battlepunishments.listeners.WebAPIListener;
 import com.lducks.battlepunishments.util.BattlePerms;
 import com.lducks.battlepunishments.util.BattleSettings;
 import com.lducks.battlepunishments.util.PluginLoader;
@@ -34,7 +34,7 @@ public class BattlePunishmentsExecutor extends CustomCommandExecutor {
 	public void onHelpCommand(CommandSender sender, Integer page) {
 		help(page,sender);
 	}
-	
+
 	@MCCommand(cmds="version")
 	public void onVersionCommand(CommandSender sender) {
 		sender.sendMessage(YELLOW + BattlePunishments.getPluginName() + " " + BattlePunishments.getVersion());
@@ -46,12 +46,17 @@ public class BattlePunishmentsExecutor extends CustomCommandExecutor {
 			sender.sendMessage(RED + "You have website set to false in the config file, meaning you can not use the syncing abilities.");
 			return;
 		}
-		
+
+		if(BattlePunishments.getServerIP() == null) {
+			sender.sendMessage(RED + "Your server IP has not yet registered.");
+			BattlePunishments.getServerIP();
+			return;
+		}
+
 		String ip = null;
 		try {
 			ip = BattlePunishments.getServerIP();
-			new ConsoleMessage(ip);
-			
+
 			if(ip == null) {
 				sender.sendMessage(ChatColor.RED + "Error");
 				return;
@@ -61,78 +66,78 @@ public class BattlePunishmentsExecutor extends CustomCommandExecutor {
 			return;
 		}
 
-		ConnectionCode.runValidConnection(sender.getName());
-		
-		UrlCheckListener.timerid = Bukkit.getScheduler().scheduleSyncRepeatingTask(BattlePunishments.getPlugin(), new Runnable() {
-			
+		ConnectionCode.validConnectionCode(sender.getName());
+
+		WebAPIListener.timerid = Bukkit.getScheduler().scheduleSyncRepeatingTask(BattlePunishments.getPlugin(), new Runnable() {
+
 			int i = 0;
-			
+
 			@Override
 			public void run() {
-				
+
 				if(i > 5) {
 					sender.sendMessage(RED + "Connection timed out");
 					cancelThis();
 					return;
 				}
-				
+
 				sender.sendMessage(YELLOW + "Checking....");
-				
+
 				i++;
 			}
 		}, 0L, 60L);
 	}
-	
+
 	@MCCommand(op=true, cmds={"verify"})
 	public void onVerifyExecute(final CommandSender sender, String key) {
-		
+
 		if(!BattleSettings.useWebsite()) {
 			sender.sendMessage(RED + "You have website set to false in the config file, meaning you can not use the syncing abilities.");
 			return;
 		}
-		
+
 		String ip = null;
 		try {
 			ip = BattlePunishments.getServerIP();
-			new ConsoleMessage(ip);
-			
+			sender.sendMessage(ChatColor.RED + "Error");	
+
 			if(ip == null) {
-				new ConsoleMessage("Error 7");
+				sender.sendMessage(ChatColor.RED + "Error");
 				return;
 			}
 		}catch(Exception e) {
 			sender.sendMessage(DARK_RED + "There was an error registering this server.");
-			new ConsoleMessage("Error 2");
+			new DumpFile("onVerifyExecute", e, "Error registering server");
 			return;
 		}
 
 		ConnectionCode.setKey(key);
-		ConnectionCode.runValidConnection(sender.getName());
-		
-		UrlCheckListener.timerid = Bukkit.getScheduler().scheduleSyncRepeatingTask(BattlePunishments.getPlugin(), new Runnable() {
-			
+		ConnectionCode.validConnectionCode(sender.getName());
+
+		WebAPIListener.timerid = Bukkit.getScheduler().scheduleSyncRepeatingTask(BattlePunishments.getPlugin(), new Runnable() {
+
 			int i;
-			
+
 			@Override
 			public void run() {
-				
+
 				if(i > 5) {
 					sender.sendMessage(RED + "Connection timed out");
 					cancelThis();
 					return;
 				}
-				
+
 				sender.sendMessage(YELLOW + "Verifying....");
 				i++;
 			}
 		}, 0L, 60L);
-				
+
 	}
 
 	private void cancelThis() {
-		Bukkit.getScheduler().cancelTask(UrlCheckListener.timerid);
+		Bukkit.getScheduler().cancelTask(WebAPIListener.timerid);
 	}
-	
+
 	@MCCommand(op=true, cmds={"convert"})
 	public void onConvert(CommandSender sender, String type, String plugin) {
 		if(type.equalsIgnoreCase("ban")) {
@@ -140,7 +145,7 @@ public class BattlePunishmentsExecutor extends CustomCommandExecutor {
 				if(PluginLoader.essentialsInstalled()) {
 					ConvertEssentials.runBans();
 					sender.sendMessage(GREEN + "Essentials bans have been converted.");
-//					sender.sendMessage(RED + "This feature is currently disabled.");
+					//					sender.sendMessage(RED + "This feature is currently disabled.");
 				}else {
 					sender.sendMessage(RED + "Essentials is not installed!");
 				}
@@ -164,7 +169,7 @@ public class BattlePunishmentsExecutor extends CustomCommandExecutor {
 			sender.sendMessage(RED + "Invalid type!");
 		}
 	}
-	
+
 	private static void help(int i, CommandSender sender) {
 		sender.sendMessage(DARK_GRAY + "----- " + BLUE + "BattlePunishments v"+BattlePunishments.getVersion() +
 				" ("+i+"/7)" + DARK_GRAY + " -----");
