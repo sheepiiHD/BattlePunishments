@@ -54,13 +54,6 @@ public class BattlePunishmentsExecutor extends CustomCommandExecutor {
 			return;
 		}
 
-		String ip = BattlePunishments.getServerIP();
-		if(ip == null) {
-			sender.sendMessage(RED + "Your server IP has not yet registered.");
-			BattlePunishments.getServerIP();
-			return;
-		}
-
 		ConnectionCode.validConnectionCode(sender.getName());
 
 		WebAPIListener.timerid = Bukkit.getScheduler().scheduleSyncRepeatingTask(BattlePunishments.getPlugin(), new Runnable() {
@@ -76,7 +69,7 @@ public class BattlePunishmentsExecutor extends CustomCommandExecutor {
 					return;
 				}
 
-				sender.sendMessage(YELLOW + "Verifying....");
+				sender.sendMessage(YELLOW + "Checking....");
 				i++;
 			}
 		}, 0L, 60L);
