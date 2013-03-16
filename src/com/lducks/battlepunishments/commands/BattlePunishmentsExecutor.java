@@ -2,13 +2,11 @@ package com.lducks.battlepunishments.commands;
 
 import static org.bukkit.ChatColor.BLUE;
 import static org.bukkit.ChatColor.DARK_GRAY;
-import static org.bukkit.ChatColor.DARK_RED;
 import static org.bukkit.ChatColor.GREEN;
 import static org.bukkit.ChatColor.RED;
 import static org.bukkit.ChatColor.YELLOW;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
 import com.lducks.battlepunishments.BattlePunishments;
@@ -16,7 +14,6 @@ import com.lducks.battlepunishments.convertplugins.ConvertCommandBook;
 import com.lducks.battlepunishments.convertplugins.ConvertEssentials;
 import com.lducks.battlepunishments.convertplugins.ConvertFlatFile;
 import com.lducks.battlepunishments.convertplugins.ConvertVanilla;
-import com.lducks.battlepunishments.debugging.DumpFile;
 import com.lducks.battlepunishments.listeners.WebAPIListener;
 import com.lducks.battlepunishments.util.BattlePerms;
 import com.lducks.battlepunishments.util.BattleSettings;
@@ -47,22 +44,10 @@ public class BattlePunishmentsExecutor extends CustomCommandExecutor {
 			return;
 		}
 
-		if(BattlePunishments.getServerIP() == null) {
+		String ip = BattlePunishments.getServerIP();
+		if(ip == null) {
 			sender.sendMessage(RED + "Your server IP has not yet registered.");
 			BattlePunishments.getServerIP();
-			return;
-		}
-
-		String ip = null;
-		try {
-			ip = BattlePunishments.getServerIP();
-
-			if(ip == null) {
-				sender.sendMessage(ChatColor.RED + "Error");
-				return;
-			}
-		}catch(Exception e) {
-			sender.sendMessage(ChatColor.RED + "Error");
 			return;
 		}
 
@@ -90,24 +75,15 @@ public class BattlePunishmentsExecutor extends CustomCommandExecutor {
 
 	@MCCommand(op=true, cmds={"verify"})
 	public void onVerifyExecute(final CommandSender sender, String key) {
-
 		if(!BattleSettings.useWebsite()) {
 			sender.sendMessage(RED + "You have website set to false in the config file, meaning you can not use the syncing abilities.");
 			return;
 		}
 
-		String ip = null;
-		try {
-			ip = BattlePunishments.getServerIP();
-			sender.sendMessage(ChatColor.RED + "Error");	
-
-			if(ip == null) {
-				sender.sendMessage(ChatColor.RED + "Error");
-				return;
-			}
-		}catch(Exception e) {
-			sender.sendMessage(DARK_RED + "There was an error registering this server.");
-			new DumpFile("onVerifyExecute", e, "Error registering server");
+		String ip = BattlePunishments.getServerIP();
+		if(ip == null) {
+			sender.sendMessage(RED + "Your server IP has not yet registered.");
+			BattlePunishments.getServerIP();
 			return;
 		}
 
