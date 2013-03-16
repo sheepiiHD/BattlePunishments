@@ -39,42 +39,16 @@ public class BattlePunishmentsExecutor extends CustomCommandExecutor {
 
 	@MCCommand(op=true, cmds="check")
 	public void onCheck(final CommandSender sender) {
-		if(!BattleSettings.useWebsite()) {
-			sender.sendMessage(RED + "You have website set to false in the config file, meaning you can not use the syncing abilities.");
-			return;
-		}
-
-		String ip = BattlePunishments.getServerIP();
-		if(ip == null) {
-			sender.sendMessage(RED + "Your server IP has not yet registered.");
-			BattlePunishments.getServerIP();
-			return;
-		}
-
-		ConnectionCode.validConnectionCode(sender.getName());
-
-		WebAPIListener.timerid = Bukkit.getScheduler().scheduleSyncRepeatingTask(BattlePunishments.getPlugin(), new Runnable() {
-
-			int i = 0;
-
-			@Override
-			public void run() {
-
-				if(i > 5) {
-					sender.sendMessage(RED + "Connection timed out");
-					cancelThis();
-					return;
-				}
-
-				sender.sendMessage(YELLOW + "Checking....");
-
-				i++;
-			}
-		}, 0L, 60L);
+		verify(sender);
 	}
 
 	@MCCommand(op=true, cmds={"verify"})
 	public void onVerifyExecute(final CommandSender sender, String key) {
+		ConnectionCode.setKey(key);
+		verify(sender);
+	}
+
+	private void verify(final CommandSender sender) {
 		if(!BattleSettings.useWebsite()) {
 			sender.sendMessage(RED + "You have website set to false in the config file, meaning you can not use the syncing abilities.");
 			return;
@@ -87,7 +61,6 @@ public class BattlePunishmentsExecutor extends CustomCommandExecutor {
 			return;
 		}
 
-		ConnectionCode.setKey(key);
 		ConnectionCode.validConnectionCode(sender.getName());
 
 		WebAPIListener.timerid = Bukkit.getScheduler().scheduleSyncRepeatingTask(BattlePunishments.getPlugin(), new Runnable() {
@@ -107,9 +80,8 @@ public class BattlePunishmentsExecutor extends CustomCommandExecutor {
 				i++;
 			}
 		}, 0L, 60L);
-
 	}
-
+	
 	private void cancelThis() {
 		Bukkit.getScheduler().cancelTask(WebAPIListener.timerid);
 	}
