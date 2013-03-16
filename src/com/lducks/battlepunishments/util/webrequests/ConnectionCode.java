@@ -90,9 +90,7 @@ public class ConnectionCode {
 			return false;
 		}
 
-		if(BattlePunishments.getServerIP() != null)
-			url.addData("server", BattlePunishments.getServerIP());
-		
+		url.addData("server", BattlePunishments.getServerIP());
 		url.addData("key", getConnectionCode());
 		url.sendData();
 

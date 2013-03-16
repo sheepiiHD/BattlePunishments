@@ -55,14 +55,13 @@ public class BattlePunishmentsExecutor extends CustomCommandExecutor {
 		}
 
 		ConnectionCode.validConnectionCode(sender.getName());
-
 		WebAPIListener.timerid = Bukkit.getScheduler().scheduleSyncRepeatingTask(BattlePunishments.getPlugin(), new Runnable() {
-
+			
 			int i;
 
 			@Override
 			public void run() {
-
+				System.out.println("    here 2  " + i);
 				if(i > 5) {
 					sender.sendMessage(RED + "Connection timed out");
 					cancelThis();
@@ -86,7 +85,6 @@ public class BattlePunishmentsExecutor extends CustomCommandExecutor {
 				if(PluginLoader.essentialsInstalled()) {
 					ConvertEssentials.runBans();
 					sender.sendMessage(GREEN + "Essentials bans have been converted.");
-					//					sender.sendMessage(RED + "This feature is currently disabled.");
 				}else {
 					sender.sendMessage(RED + "Essentials is not installed!");
 				}
