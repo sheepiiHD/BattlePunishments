@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ====================================================================== 
+     lDucks
+     ====================================================================== -->
+<project name="BattlePunishments" default="build">
+    <description>
+    	An all around minecraft player/admin management system that contains bans, mutes, IP tracking, watchlists, player help commands, and much, much more.
+    </description>
+
+    <!-- set global properties for this build -->
+    <property name="src" location="src" />
+    <property name="bin" location="bin" />
+    <property name="lib" location="C:\\Users\\BASEMENT\\Documents\\Java\\Dependancies" />
+    <target name="init" depends="clean" description="create necessary folders">
+        <mkdir dir="${bin}" />
+    </target>
+    <target name="build" depends="init" description="compile the source">
+        <javac srcdir="${src}" destdir="${bin}" debug="on" debuglevel="lines,vars,source" includeantruntime="false" encoding="Cp1252">
+            <classpath>
+                <pathelement path="${lib}" />
+                <pathelement location="${lib}/Herochat.jar" />
+                <pathelement location="${lib}/TagAPI.jar" />
+                <pathelement location="${lib}/bukkit.jar" />
+                <pathelement location="${lib}/Vault.jar" />
+                <pathelement location="${lib}/Essentials.jar" />
+                <pathelement location="${lib}/WebAPI.jar" />
+                <pathelement location="${lib}/CommandBook.jar" />
+                <pathelement location="${lib}/commons-dbcp.jar" />
+                <pathelement location="${lib}/commons-pool.jar" />
+            </classpath>
+        </javac>
+        <antcall target="dist" />
+    </target>
+    <target name="dist" description="generate the distribution">
+        <jar jarfile="${bin}/BattlePunishments.jar" basedir="${bin}" encoding="Cp1252">
+        	<exclude name="BattlePunishments.jar" />
+            <zipfileset dir="." includes="*.yml" />
+            <zipgroupfileset dir="${lib}" includes="commons-dbcp.jar" />
+            <zipgroupfileset dir="${lib}" includes="commons-pool.jar" />
+        </jar>
+    </target>
+    <target name="clean" description="clean up">
+        <delete dir="${bin}" />
+    </target>
+
+</project>
