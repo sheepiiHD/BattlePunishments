@@ -300,42 +300,39 @@ public class BattlePunishments extends JavaPlugin{
 	 */
 	public static String getServerIP(){
 		if(serverip == null) {
+			final int port = Bukkit.getPort();
 
-			if(Bukkit.getServer().getIp() == null)
+			if(Bukkit.getServer().getIp() == null){
 				serverip = Bukkit.getServer().getIp();
-			else {
+				if (port != 25565)
+					serverip += ":"+port;
+			} else {
 				URL whatismyip;
 				try {
 					whatismyip = new URL("http://BattlePunishments.net/grabbers/ip.php");
 				} catch (Exception e) {
-					new DumpFile("getServerIP", e, "Invalid URL");
+					e.printStackTrace();
 					return null;
 				}
 
 				WebURL url = new WebURL(whatismyip);
 
 				url.getPage(new URLResponseHandler() {
-					@Override
 					public void validResponse(final BufferedReader br) throws IOException {
 						String ip = br.readLine();
-
 						if(ip == null)
 							throw new NullPointerException();
-
-						BattlePunishments.serverip = ip;
-						ConnectionCode.validConnectionCode(null);
+						serverip = ip;
+						if (port != 25565)
+							serverip += ":"+port;
 					}
 
-					@Override
 					public void invalidResponse(Exception e) {
-						new DumpFile("getServerIP", e, "Invalid response");
+						e.printStackTrace();
 					}
 				});
 			}
 		}
-
-		if(Bukkit.getPort() != 25565)
-			serverip = serverip+":"+Bukkit.getPort();
 
 		return serverip;
 	}

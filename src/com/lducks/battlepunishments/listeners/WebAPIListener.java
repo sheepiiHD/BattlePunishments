@@ -3,6 +3,7 @@ package com.lducks.battlepunishments.listeners;
 import java.io.BufferedReader;
 import java.io.IOException;
 
+import mc.battleplugins.webapi.controllers.timers.Scheduler;
 import mc.battleplugins.webapi.event.SendDataEvent;
 import mc.battleplugins.webapi.object.callbacks.URLResponseHandler;
 
@@ -13,7 +14,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
 import com.lducks.battlepunishments.BattlePunishments;
-import com.lducks.battlepunishments.util.webrequests.ConnectionCode;
 
 /**
  * @author lDucks
@@ -22,11 +22,10 @@ import com.lducks.battlepunishments.util.webrequests.ConnectionCode;
 public class WebAPIListener implements Listener{
 
 	public static int timerid = -2;
-
+	
 	@EventHandler
 	public void onUrlCheckEvent(final SendDataEvent event) {
 		event.getURL().getPage(new URLResponseHandler() {
-			@Override
 			public void validResponse(BufferedReader br) throws IOException {
 				final String line;
 				try {
@@ -36,8 +35,7 @@ public class WebAPIListener implements Listener{
 					return;
 				}
 
-				Bukkit.getScheduler().scheduleSyncDelayedTask(BattlePunishments.getPlugin(), new Runnable() {
-					@Override
+				Scheduler.scheduleSynchrounousTask(new Runnable() {
 					public void run() {
 						boolean valid = false;
 
@@ -63,17 +61,12 @@ public class WebAPIListener implements Listener{
 									p.sendMessage(ChatColor.RED + "Connection could not be verified");
 							}
 						}
-
-						LoginListener.checkvalid = valid;
-						ConnectionCode.setValid(valid);
 					}
 				});
 			}
 
-			@Override
 			public void invalidResponse(Exception e) {
-				Bukkit.getScheduler().scheduleSyncDelayedTask(BattlePunishments.getPlugin(), new Runnable() {
-					@Override
+				Scheduler.scheduleSynchrounousTask(new Runnable() {
 					public void run() {
 						if(timerid != -2) {
 							Bukkit.getScheduler().cancelTask(timerid);
@@ -82,9 +75,6 @@ public class WebAPIListener implements Listener{
 							if(p != null)
 								p.sendMessage(ChatColor.RED + "Connection could not be verified");
 						}
-
-						LoginListener.checkvalid = false;
-						ConnectionCode.setValid(false);
 					}
 				});
 			}
