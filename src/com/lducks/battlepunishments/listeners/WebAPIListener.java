@@ -14,6 +14,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
 import com.lducks.battlepunishments.BattlePunishments;
+import com.lducks.battlepunishments.util.webrequests.ConnectionCode;
 
 /**
  * @author lDucks
@@ -22,7 +23,7 @@ import com.lducks.battlepunishments.BattlePunishments;
 public class WebAPIListener implements Listener{
 
 	public static int timerid = -2;
-	
+
 	@EventHandler
 	public void onUrlCheckEvent(final SendDataEvent event) {
 		event.getURL().getPage(new URLResponseHandler() {
@@ -44,10 +45,15 @@ public class WebAPIListener implements Listener{
 						else
 							valid = false;
 
+						ConnectionCode.setValid(valid);
+						
 						if(timerid != -2) {
 							Bukkit.getScheduler().cancelTask(timerid);
 							timerid = -2;
 
+							if(event.getCaller() == null)
+								return;
+							
 							Player p = Bukkit.getPlayer(event.getCaller());
 							if(p != null) {
 								if(valid) {

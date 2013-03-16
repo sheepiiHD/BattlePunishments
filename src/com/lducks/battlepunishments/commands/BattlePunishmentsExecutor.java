@@ -37,12 +37,12 @@ public class BattlePunishmentsExecutor extends CustomCommandExecutor {
 		sender.sendMessage(YELLOW + BattlePunishments.getPluginName() + " " + BattlePunishments.getVersion());
 	}
 
-	@MCCommand(op=true, cmds="check")
+	@MCCommand(op=true, inGame=true, cmds="check")
 	public void onCheck(final CommandSender sender) {
 		verify(sender);
 	}
 
-	@MCCommand(op=true, cmds={"verify"})
+	@MCCommand(op=true, inGame=true, cmds={"verify"})
 	public void onVerifyExecute(final CommandSender sender, String key) {
 		ConnectionCode.setKey(key);
 		verify(sender);
@@ -61,7 +61,6 @@ public class BattlePunishmentsExecutor extends CustomCommandExecutor {
 
 			@Override
 			public void run() {
-				System.out.println("    here 2  " + i);
 				if(i > 5) {
 					sender.sendMessage(RED + "Connection timed out");
 					cancelThis();

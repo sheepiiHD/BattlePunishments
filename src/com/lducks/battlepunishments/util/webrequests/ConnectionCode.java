@@ -92,7 +92,7 @@ public class ConnectionCode {
 
 		url.addData("server", BattlePunishments.getServerIP());
 		url.addData("key", getConnectionCode());
-		url.sendData();
+		url.sendData(caller);
 
 		return valid;
 	}
