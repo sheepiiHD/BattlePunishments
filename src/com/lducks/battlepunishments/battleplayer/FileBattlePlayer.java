@@ -505,6 +505,9 @@ public class FileBattlePlayer implements BattlePlayer {
 	}
 
 	public void editStrikes(int strikes){
+		if(!BattleSettings.useStrikes())
+			return;
+		
 		int s = config.getInt("strikes");
 
 		long laststrike = config.getInt("laststrike");

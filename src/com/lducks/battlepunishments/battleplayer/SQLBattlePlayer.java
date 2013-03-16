@@ -163,6 +163,8 @@ public class SQLBattlePlayer implements BattlePlayer {
 	}
 
 	public int getStrikes() {
+		if(!BattleSettings.useStrikes())
+			return 0;
 
 		int s = config.getStrikes(name);
 
@@ -211,17 +213,17 @@ public class SQLBattlePlayer implements BattlePlayer {
 
 	public void editStrikes(int s) {
 		int strikes = config.getStrikes(name);
-		long laststrike;
-
 		try {
-			laststrike = Long.parseLong(config.getLastStrike(name));
+			if(config.getLastStrike(name) != null) {
+				long laststrike = Long.parseLong(config.getLastStrike(name));
+				
+				if(laststrike <= System.currentTimeMillis()) {
+					s = s - BattleSettings.getCooldownDrop();
+				}
+			}
 		}catch (Exception e) {
 			new DumpFile("editStrikes",e,"Error parsing laststrike to long");
 			return;
-		}
-
-		if(laststrike <= System.currentTimeMillis()) {
-			s = s - BattleSettings.getCooldownDrop();
 		}
 
 		strikes = strikes + s;
@@ -290,7 +292,7 @@ public class SQLBattlePlayer implements BattlePlayer {
 
 		if(!getIPList().contains(ip))
 			config.addIP(name, ip);
-		
+
 		try {
 			UpdateDatabase.updateIP(BattlePunishments.createBattlePlayer(name), ip);
 		} catch (Exception e) {

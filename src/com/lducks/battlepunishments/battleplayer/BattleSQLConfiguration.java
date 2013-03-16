@@ -231,7 +231,7 @@ public class BattleSQLConfiguration{
 			return 0;
 	}
 
-	public static final String updateStrikes = "replace into bp_strikes (player,strikes) VALUES(?,?)";
+	public static final String updateStrikes = "replace into bp_strikes (player,strikes,laststrike) VALUES(?,?,?)";
 	public void setStrikes(String name, int s) {
 
 		new ConsoleMessage("int s ===      " + s);
@@ -255,7 +255,7 @@ public class BattleSQLConfiguration{
 		if(sqltype.equalsIgnoreCase("sqlite"))
 			updateStrikes.replace("replace into", "INSERT OR REPLACE INTO");
 
-		sql.executeUpdate(updateStrikes, name, s);
+		sql.executeUpdate(updateStrikes, name, s, System.currentTimeMillis());
 	}
 
 	public static final String executeSetRealName = "replace into bp_info (player,realname,nickname) VALUES(?,?,?)";
@@ -374,7 +374,7 @@ public class BattleSQLConfiguration{
 
 
 	public String getLastStrike(String name) {
-		String getTimeOfBan = "select laststrike from bp_ban where player=?";
+		String getTimeOfBan = "select laststrike from bp_strikes where player=?";
 		return sql.getString(getTimeOfBan, name);
 	}
 }
