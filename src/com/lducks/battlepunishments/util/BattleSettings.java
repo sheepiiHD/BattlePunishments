@@ -250,4 +250,18 @@ public class BattleSettings {
 	public static String getBroadcastFormat() {
 		return config.getString("broadcast.format");
 	}
+
+	/**
+	 * @return boolean If login messages are enabled
+	 */
+	public static boolean loginMessage() {
+		return config.getBoolean("loginmessage");
+	}
+
+	/**
+	 * @return boolean If logout messages are enabled
+	 */
+	public static boolean logoutMessage() {
+		return config.getBoolean("logoutmessage");
+	}
 }

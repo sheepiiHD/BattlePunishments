@@ -33,6 +33,9 @@ public class LoginListener implements Listener{
 	
 	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent event) {
+		if(!BattleSettings.loginMessage())
+			event.setJoinMessage(null);
+		
 		Player p = event.getPlayer();
 
 		if(p.isOp()) {

@@ -29,6 +29,7 @@ import com.lducks.battlepunishments.debugging.DumpFile;
 import com.lducks.battlepunishments.listeners.BlockListener;
 import com.lducks.battlepunishments.listeners.CommandListener;
 import com.lducks.battlepunishments.listeners.LoginListener;
+import com.lducks.battlepunishments.listeners.LogoutListener;
 import com.lducks.battlepunishments.listeners.MiscListener;
 import com.lducks.battlepunishments.listeners.SignColors;
 import com.lducks.battlepunishments.listeners.SneakListener;
@@ -80,6 +81,7 @@ public class BattlePunishments extends JavaPlugin{
 		version = pdfFile.getVersion();
 
 		this.getServer().getPluginManager().registerEvents(new LoginListener(), this);
+		this.getServer().getPluginManager().registerEvents(new LogoutListener(), this);
 
 		if(!PluginLoader.herochatInstalled())
 			this.getServer().getPluginManager().registerEvents(new ChatListener(), this);

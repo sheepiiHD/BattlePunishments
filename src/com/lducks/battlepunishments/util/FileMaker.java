@@ -33,12 +33,12 @@ public class FileMaker {
 			if(!a.exists()){
 				try {
 					a.createNewFile();
-					log.info("[" + BattlePunishments.getPluginName() + "] "+path+"/"+filename+".yml created.");
+					log.info("[" + BattlePunishments.getPluginName() + "] "+path+"/"+filename+" created.");
 				}catch (IOException e) {
 					new DumpFile("create"+filename, e, "Error creating file "+filename);
 				}
 			}else{
-				log.info("[" + BattlePunishments.getPluginName() + "] "+path+"/"+filename+".yml found.");
+				log.info("[" + BattlePunishments.getPluginName() + "] "+path+"/"+filename+" found.");
 			}
 		}
 	}
