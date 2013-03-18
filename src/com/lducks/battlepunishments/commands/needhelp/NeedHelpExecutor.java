@@ -86,12 +86,10 @@ public class NeedHelpExecutor extends CustomCommandExecutor{
 		}
 
 		String duder = sender.getName();
-		Player[] playerListVariable = Bukkit.getServer().getOnlinePlayers();
-		
 		if(BattleSettings.useBattleLog())
 			BattleLog.addMessage(sender.getName() + " requested help!");
 		
-		for(Player op : playerListVariable){
+		for(Player op : Bukkit.getServer().getOnlinePlayers()){
 			if(op.hasPermission(BattlePerms.RESPOND)){
 				op.sendMessage(DARK_RED+""+ BOLD+"[ATTENTION] "+AQUA+ITALIC+duder+" has requested staff help!");
 				op.playEffect(op.getLocation(), Effect.POTION_BREAK, 5);

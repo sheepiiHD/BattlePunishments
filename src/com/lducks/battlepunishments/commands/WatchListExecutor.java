@@ -44,6 +44,7 @@ public class WatchListExecutor extends CustomCommandExecutor{
 		}
 
 		bp.addPlayerToWatchList();
+		BattlePunishments.setWatchList(wlc.getWatchList());
 		
 		if(BattleSettings.useBattleLog())
 			BattleLog.addMessage(bp.getRealName() + " was just added to the watchlist by " + sender.getName() + ".");
@@ -63,6 +64,8 @@ public class WatchListExecutor extends CustomCommandExecutor{
 		}
 
 		bp.removePlayerFromWatchList();
+		BattlePunishments.setWatchList(wlc.getWatchList());
+		
 		sender.sendMessage(RED + "Player was removed.");
 		
 		if(BattleSettings.useBattleLog())
@@ -129,11 +132,12 @@ public class WatchListExecutor extends CustomCommandExecutor{
 
 		int i = 1;
 
-		if(watchlist.size() == 0)
+		if(watchlist.size() == 0) {
 			p.sendMessage(RED + "The watch list is empty.");
+			return;
+		}
 
 		for(String s : watchlist){
-
 			if(Bukkit.getPlayer(s) != null){
 				p.sendMessage(BLUE + "[" + i + "] " + GREEN + s);
 			}else{
