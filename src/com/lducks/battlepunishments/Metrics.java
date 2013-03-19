@@ -679,6 +679,18 @@ public class Metrics {
 			}
 
 		});
+		
+		graph.addPlotter(new Metrics.Plotter("WebAPI") {
+
+			@Override
+			public int getValue() {
+				if(PluginLoader.webAPIInstalled())
+					return 1;
+				else
+					return 0;
+			}
+
+		});
 
 		graph.addPlotter(new Metrics.Plotter("TagAPI") {
 
