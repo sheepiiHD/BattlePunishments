@@ -259,7 +259,6 @@ public class SQLBattlePlayer implements BattlePlayer {
 
 	public void ban(String r, long time, String banner, boolean ipbanned) {
 		config.ban(name, r, time, banner, ipbanned);
-		Bukkit.getOfflinePlayer(name).setBanned(true);
 	}
 
 	public void unmute() {
@@ -268,7 +267,6 @@ public class SQLBattlePlayer implements BattlePlayer {
 
 	public void unban() {
 		config.unban(name);
-		Bukkit.getOfflinePlayer(name).setBanned(false);
 	}
 
 	public void clearBlockList() {

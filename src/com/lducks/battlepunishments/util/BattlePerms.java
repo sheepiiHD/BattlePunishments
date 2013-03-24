@@ -32,7 +32,4 @@ public class BattlePerms {
 	public static final String SIGNCOLORS = "battlepunishments.signcolors";
 	public static final String DEBUGGING = "battlepunishments.debugging";
 	public static final String CHATSTALKER = "battlepunishments.chatstalker";
-	
-	@Deprecated
-	public static final String DSAVER = "battlepunishments.dsaver";
 }

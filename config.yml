@@ -122,6 +122,10 @@ force:
     samelevel: false
     # Whether or not someone can force a person with the force node.
     
+# Disable or enable login and logout messages
+loginmessage: false
+logoutmessage: false
+
 nicknames:
   usetagapi: false 
   # Allow nicknames to change the tag above a player's head

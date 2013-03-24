@@ -242,7 +242,6 @@ public class FileBattlePlayer implements BattlePlayer {
 	}
 
 	public void ban(String reason, long time, String string, boolean ipbanned){
-		Bukkit.getOfflinePlayer(name).setBanned(true);
 		config.set("ban.reason", reason);
 		config.set("ban.time", time);
 		config.set("ban.by", string);
@@ -261,7 +260,6 @@ public class FileBattlePlayer implements BattlePlayer {
 	public void unban(){
 		config.set("ban", null);
 		config.set("ipbanned", null);
-		Bukkit.getOfflinePlayer(name).setBanned(false);
 		save();
 	}
 
