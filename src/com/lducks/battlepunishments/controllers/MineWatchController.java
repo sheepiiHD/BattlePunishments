@@ -13,13 +13,13 @@ import org.bukkit.configuration.file.YamlConfiguration;
  * BlockListeningList config
  * 
  */
-public class BlockListController {
+public class MineWatchController {
 
 	private static YamlConfiguration config;
 	private static File f;
 
 	public void setConfig(File f){
-		BlockListController.f = f;
+		MineWatchController.f = f;
 		config = new YamlConfiguration();
 		try {
 			config.load(f);
@@ -44,7 +44,7 @@ public class BlockListController {
 
 		if(x){
 			try{
-				config.save(BlockListController.f);
+				config.save(MineWatchController.f);
 			}catch(Exception e){
 				e.printStackTrace();
 			}

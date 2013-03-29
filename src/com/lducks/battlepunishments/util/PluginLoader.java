@@ -34,21 +34,21 @@ public class PluginLoader {
 	}
 
 	/**
-	 * @return boolean Essentials is installed
+	 * @return boolean If Essentials is installed
 	 */
 	public static boolean essentialsInstalled() {
 		return (Bukkit.getPluginManager().getPlugin("Essentials") != null);
 	}
 
 	/**
-	 * @return boolean CommandBook is installed
+	 * @return boolean If CommandBook is installed
 	 */
 	public static boolean cmdBookInstalled() {
 		return (Bukkit.getPluginManager().getPlugin("CommandBook") != null);
 	}
 
 	/**
-	 * @return boolean WebAPI is installed
+	 * @return boolean If WebAPI is installed
 	 */
 	public static boolean webAPIInstalled() {
 		return (Bukkit.getPluginManager().getPlugin("WebAPI") != null);

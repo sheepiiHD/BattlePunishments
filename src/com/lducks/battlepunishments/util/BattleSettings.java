@@ -80,8 +80,9 @@ public class BattleSettings {
 		boolean b = config.getBoolean("nicknames.usetagapi");
 		
 		if(b)
-			return PluginLoader.tagAPIInstalled();
-		else return false;
+			b = PluginLoader.tagAPIInstalled();
+
+		return b;
 	}
 
 	public static boolean wlRemoveOnBan() {
@@ -228,9 +229,9 @@ public class BattleSettings {
 		boolean b = config.getBoolean("website");
 		
 		if(b)
-			return PluginLoader.webAPIInstalled();
-		else
-			return false;
+			b = PluginLoader.webAPIInstalled();
+
+		return b;
 	}
 
 	/**

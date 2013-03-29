@@ -17,14 +17,13 @@ import org.bukkit.plugin.java.JavaPlugin;
 import com.lducks.battlepunishments.battleplayer.BattlePlayer;
 import com.lducks.battlepunishments.battleplayer.FileBattlePlayer;
 import com.lducks.battlepunishments.battleplayer.SQLBattlePlayer;
-import com.lducks.battlepunishments.controllers.BlockListController;
+import com.lducks.battlepunishments.controllers.MineWatchController;
 import com.lducks.battlepunishments.controllers.iplist.FileIPListController;
 import com.lducks.battlepunishments.controllers.iplist.IPListController;
 import com.lducks.battlepunishments.controllers.iplist.SQLIPListController;
 import com.lducks.battlepunishments.controllers.watchlist.FileWatchListController;
 import com.lducks.battlepunishments.controllers.watchlist.SQLWatchListController;
 import com.lducks.battlepunishments.controllers.watchlist.WatchListController;
-import com.lducks.battlepunishments.debugging.ConsoleMessage;
 import com.lducks.battlepunishments.debugging.DumpFile;
 import com.lducks.battlepunishments.listeners.BlockListener;
 import com.lducks.battlepunishments.listeners.CommandListener;
@@ -118,19 +117,18 @@ public class BattlePunishments extends JavaPlugin{
 			new DumpFile("onEnable", e, "Error enabling Metrics");
 		}
 
-		new ConsoleMessage("sqlenabled   =   " + BattleSettings.sqlIsEnabled());
 		if(BattleSettings.sqlIsEnabled()) {
 			sql = new SQLInstance();
 			SQLSerializerConfig.configureSQL(this, sql, BattleSettings.getSQLOptions());
 		}
 
-		BlockListController bl = new BlockListController();
-		bl.setConfig(new File(getPath()+"/blocklogger.yml"));
+		MineWatchController mw = new MineWatchController();
+		mw.setConfig(new File(getPath()+"/blocklogger.yml"));
 
 		try {
-			BlockListController.getConfig().load(getPath()+"/blocklogger.yml");
+			MineWatchController.getConfig().load(getPath()+"/blocklogger.yml");
 		} catch (Exception e) {
-			e.printStackTrace();
+			new DumpFile("MineWatchController", e, "Error loading controller");
 		}
 
 		if(BattleSettings.useTagAPI())

@@ -12,7 +12,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 
-import com.lducks.battlepunishments.controllers.BlockListController;
+import com.lducks.battlepunishments.controllers.MineWatchController;
 import com.lducks.battlepunishments.util.BattlePerms;
 
 /**
@@ -27,7 +27,7 @@ public class BlockListener implements Listener {
 
 	@EventHandler
 	public void onBlockBreak(BlockBreakEvent event){
-		if(event.isCancelled() || !BlockListController.isEnabled())
+		if(event.isCancelled() || !MineWatchController.isEnabled())
 			return;
 
 		Player p = event.getPlayer();
@@ -35,7 +35,7 @@ public class BlockListener implements Listener {
 		if(p.hasPermission(BattlePerms.BLOCKLOGGER))
 			return;
 
-		List<Material> blocks = BlockListController.getList();
+		List<Material> blocks = MineWatchController.getList();
 
 		if(blocks.contains(event.getBlock().getType())){
 			long last = System.currentTimeMillis();
