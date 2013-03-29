@@ -18,7 +18,7 @@ import com.lducks.battlepunishments.listeners.chat.ChatEditor;
 import com.lducks.battlepunishments.util.BattlePerms;
 import com.lducks.battlepunishments.util.BattleSettings;
 import com.lducks.battlepunishments.util.TimeConverter;
-import com.lducks.battlepunishments.util.webrequests.ConnectionCode;
+import com.lducks.battlepunishments.util.webrequests.WebConnections;
 import com.lducks.battlepunishments.util.webrequests.PluginUpdater;
 
 /**
@@ -46,7 +46,7 @@ public class LoginListener implements Listener{
 						YELLOW + "tiny.cc/BattlePunishments");
 			}
 
-			if(BattleSettings.useWebsite() && !ConnectionCode.validConnectionCode(null) && checkvalid) {
+			if(BattleSettings.useWebsite() && !WebConnections.validConnectionCode(null) && checkvalid) {
 				p.sendMessage(BLUE + "This server is not registered on http://BattlePunishments.net! " +
 						"Check it out to see what features you can get by signing up!");
 			}

@@ -1,14 +1,8 @@
 package com.lducks.battlepunishments;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.IOException;
-import java.net.URL;
 import java.util.List;
 import java.util.logging.Logger;
-
-import mc.battleplugins.webapi.object.WebURL;
-import mc.battleplugins.webapi.object.callbacks.URLResponseHandler;
 
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginDescriptionFile;
@@ -29,7 +23,6 @@ import com.lducks.battlepunishments.listeners.BlockListener;
 import com.lducks.battlepunishments.listeners.CommandListener;
 import com.lducks.battlepunishments.listeners.LoginListener;
 import com.lducks.battlepunishments.listeners.LogoutListener;
-import com.lducks.battlepunishments.listeners.MiscListener;
 import com.lducks.battlepunishments.listeners.SignColors;
 import com.lducks.battlepunishments.listeners.SneakListener;
 import com.lducks.battlepunishments.listeners.TagAPIListener;
@@ -44,8 +37,8 @@ import com.lducks.battlepunishments.util.BattleSettings;
 import com.lducks.battlepunishments.util.FileMaker;
 import com.lducks.battlepunishments.util.PluginLoader;
 import com.lducks.battlepunishments.util.RegisterItems;
-import com.lducks.battlepunishments.util.webrequests.ConnectionCode;
 import com.lducks.battlepunishments.util.webrequests.PluginUpdater;
+import com.lducks.battlepunishments.util.webrequests.WebConnections;
 
 /**
  * 
@@ -55,7 +48,6 @@ import com.lducks.battlepunishments.util.webrequests.PluginUpdater;
 
 public class BattlePunishments extends JavaPlugin{
 
-	private static String serverip = null;
 	private static Logger log = Logger.getLogger("Minecraft");
 	private static String name, version;
 	private static BattlePunishments plugin;
@@ -81,16 +73,23 @@ public class BattlePunishments extends JavaPlugin{
 		this.getServer().getPluginManager().registerEvents(new LoginListener(), this);
 		this.getServer().getPluginManager().registerEvents(new LogoutListener(), this);
 
-		if(!PluginLoader.herochatInstalled())
+		log.info("[BattlePunishments] Checking for Herochat");
+		
+		if(!PluginLoader.herochatInstalled()) {
+			log.info("[BattlePunishments] Herochat was not found, " +
+					"registering default listeners.");
 			this.getServer().getPluginManager().registerEvents(new ChatListener(), this);
-		else
+		} else {
+			log.info("[BattlePunishments] Herochat was found, registering Herochat listeners.");
 			this.getServer().getPluginManager().registerEvents(new HeroChatListener(), this);
-
-		this.getServer().getPluginManager().registerEvents(new MiscListener(), this);
+		}
+		
 		this.getServer().getPluginManager().registerEvents(new CommandListener(), this);
 		this.getServer().getPluginManager().registerEvents(new BlockListener(), this);
 		this.getServer().getPluginManager().registerEvents(new SneakListener(), this);
 
+		log.info("[BattlePunishments] Core events registered.");
+		
 		new FileMaker();
 		saveDefaultConfig();
 
@@ -98,11 +97,11 @@ public class BattlePunishments extends JavaPlugin{
 		bs.setConfig(new File(getPath()+"/config.yml"));
 
 		if(BattleSettings.useWebsite()) {
-			getServerIP();
+			WebConnections.getServerIP();
 			this.getServer().getPluginManager().registerEvents(new WebAPIListener(), this);
 			
 			try {
-				ConnectionCode cc = new ConnectionCode();
+				WebConnections cc = new WebConnections();
 				cc.setConfig(new File(getPath()+"/private.key"));
 			}catch(Exception e) {
 				new DumpFile("ConnectionCode", e, "Error in private.key file or file does not exist");
@@ -277,48 +276,5 @@ public class BattlePunishments extends JavaPlugin{
 	public static void Abort(String reason) {
 		log.severe("[" + getPluginName() + "] "+reason+" | ERROR - PLUGIN ABORTING");
 		Bukkit.getPluginManager().disablePlugin(plugin);
-	}
-
-	/**
-	 * 
-	 * @return server IP of current server
-	 */
-	public static String getServerIP(){
-		if(serverip == null) {
-			final int port = Bukkit.getPort();
-
-			if(Bukkit.getServer().getIp() == null){
-				serverip = Bukkit.getServer().getIp();
-				if (port != 25565)
-					serverip += ":"+port;
-			} else {
-				URL whatismyip;
-				try {
-					whatismyip = new URL("http://BattlePunishments.net/grabbers/ip.php");
-				} catch (Exception e) {
-					e.printStackTrace();
-					return null;
-				}
-
-				WebURL url = new WebURL(whatismyip);
-
-				url.getPage(new URLResponseHandler() {
-					public void validResponse(final BufferedReader br) throws IOException {
-						String ip = br.readLine();
-						if(ip == null)
-							throw new NullPointerException();
-						serverip = ip;
-						if (port != 25565)
-							serverip += ":"+port;
-					}
-
-					public void invalidResponse(Exception e) {
-						e.printStackTrace();
-					}
-				});
-			}
-		}
-
-		return serverip;
 	}
 }

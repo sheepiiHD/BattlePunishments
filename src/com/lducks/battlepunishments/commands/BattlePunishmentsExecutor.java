@@ -18,7 +18,7 @@ import com.lducks.battlepunishments.listeners.WebAPIListener;
 import com.lducks.battlepunishments.util.BattlePerms;
 import com.lducks.battlepunishments.util.BattleSettings;
 import com.lducks.battlepunishments.util.PluginLoader;
-import com.lducks.battlepunishments.util.webrequests.ConnectionCode;
+import com.lducks.battlepunishments.util.webrequests.WebConnections;
 
 /**
  * 
@@ -44,7 +44,7 @@ public class BattlePunishmentsExecutor extends CustomCommandExecutor {
 
 	@MCCommand(op=true, inGame=true, cmds={"verify"})
 	public void onVerifyExecute(final CommandSender sender, String key) {
-		ConnectionCode.setKey(key);
+		WebConnections.setKey(key);
 		verify(sender);
 	}
 
@@ -54,7 +54,7 @@ public class BattlePunishmentsExecutor extends CustomCommandExecutor {
 			return;
 		}
 
-		ConnectionCode.validConnectionCode(sender.getName());
+		WebConnections.validConnectionCode(sender.getName());
 		WebAPIListener.timerid = Bukkit.getScheduler().scheduleSyncRepeatingTask(BattlePunishments.getPlugin(), new Runnable() {
 			
 			int i;

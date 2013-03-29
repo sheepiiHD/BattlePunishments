@@ -8,7 +8,6 @@ import mc.battleplugins.webapi.object.WebURL;
 
 import org.bukkit.Bukkit;
 
-import com.lducks.battlepunishments.BattlePunishments;
 import com.lducks.battlepunishments.battleplayer.BattlePlayer;
 import com.lducks.battlepunishments.util.BattleSettings;
 
@@ -21,19 +20,19 @@ import com.lducks.battlepunishments.util.BattleSettings;
 public class UpdateDatabase {
 
 	private static String updateURL = "http://BattlePunishments.net/grabbers/updategrabber.php";
-	private final static String key = ConnectionCode.getConnectionCode();
+	private final static String key = WebConnections.getConnectionCode();
 
 	/**
 	 * @param bp BattlePlayer object
 	 */
 	public static void updateBan(final BattlePlayer bp) throws Exception {
-		if(!BattleSettings.useWebsite() || !bp.isBanned() || !Bukkit.getOnlineMode() || BattlePunishments.getServerIP() == null)
+		if(!BattleSettings.useWebsite() || !bp.isBanned() || !Bukkit.getOnlineMode() || WebConnections.getServerIP() == null)
 			return;
 
 		WebURL url = new WebURL(new URL(updateURL));
 		url.addData("type","ban");
 		url.addData("key", key);
-		url.addData("server", BattlePunishments.getServerIP());
+		url.addData("server", WebConnections.getServerIP());
 		url.addData("player", bp.getRealName());
 		url.addData("banner", bp.getBanner());
 		url.addData("reason", bp.getBanReason());
@@ -46,13 +45,13 @@ public class UpdateDatabase {
 	 * @param bp BattlePlayer object
 	 */
 	public static void updateMute(final BattlePlayer bp) throws Exception {
-		if(!BattleSettings.useWebsite() || !Bukkit.getOnlineMode() || !bp.isMuted() || BattlePunishments.getServerIP() == null)
+		if(!BattleSettings.useWebsite() || !Bukkit.getOnlineMode() || !bp.isMuted() || WebConnections.getServerIP() == null)
 			return;
 
 		WebURL url = new WebURL(new URL(updateURL));
 		url.addData("type","mute");
 		url.addData("key", key);
-		url.addData("server", BattlePunishments.getServerIP());
+		url.addData("server", WebConnections.getServerIP());
 		url.addData("player", bp.getRealName());
 		url.addData("muter", bp.getMuter());
 		url.addData("reason", bp.getMuteReason());
@@ -65,13 +64,13 @@ public class UpdateDatabase {
 	 * @param bp BattlePlayer object
 	 */
 	public static void updateStrikes(final BattlePlayer bp) throws Exception {
-		if(!BattleSettings.useWebsite() || !Bukkit.getOnlineMode() || bp.getStrikes() == 0 || BattlePunishments.getServerIP() == null)
+		if(!BattleSettings.useWebsite() || !Bukkit.getOnlineMode() || bp.getStrikes() == 0 || WebConnections.getServerIP() == null)
 			return;
 
 		WebURL url = new WebURL(new URL(updateURL));
 		url.addData("type","strikes");
 		url.addData("key", key);
-		url.addData("server", BattlePunishments.getServerIP());
+		url.addData("server", WebConnections.getServerIP());
 		url.addData("player", bp.getRealName());
 		url.addData("strikes", ""+bp.getStrikes());
 		url.addData("maxstrikes", ""+BattleSettings.getStrikesMax());
@@ -103,13 +102,13 @@ public class UpdateDatabase {
 	 */
 	public static void updateIP(final BattlePlayer bp, String ipb) throws Exception {
 		final String ip = md5(ipb);
-		if(!BattleSettings.useWebsite() || !Bukkit.getOnlineMode() || BattlePunishments.getServerIP() == null)
+		if(!BattleSettings.useWebsite() || !Bukkit.getOnlineMode() || WebConnections.getServerIP() == null)
 			return;
 
 		WebURL url = new WebURL(new URL(updateURL));
 		url.addData("type","ip");
 		url.addData("key", key);
-		url.addData("server", BattlePunishments.getServerIP());
+		url.addData("server", WebConnections.getServerIP());
 		url.addData("player", bp.getRealName());
 		url.addData("ip", ip);
 		

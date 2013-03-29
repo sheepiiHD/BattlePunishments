@@ -13,8 +13,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
-import com.lducks.battlepunishments.BattlePunishments;
-import com.lducks.battlepunishments.util.webrequests.ConnectionCode;
+import com.lducks.battlepunishments.util.webrequests.WebConnections;
 
 /**
  * @author lDucks
@@ -40,12 +39,12 @@ public class WebAPIListener implements Listener{
 					public void run() {
 						boolean valid = false;
 
-						if(BattlePunishments.getServerIP() != null)
-							valid = BattlePunishments.getServerIP().equalsIgnoreCase(line);
+						if(WebConnections.getServerIP() != null)
+							valid = WebConnections.getServerIP().equalsIgnoreCase(line);
 						else
 							valid = false;
 
-						ConnectionCode.setValid(valid);
+						WebConnections.setValid(valid);
 						
 						if(timerid != -2) {
 							Bukkit.getScheduler().cancelTask(timerid);

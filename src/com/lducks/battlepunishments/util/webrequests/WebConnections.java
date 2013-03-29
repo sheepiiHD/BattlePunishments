@@ -1,13 +1,16 @@
 package com.lducks.battlepunishments.util.webrequests;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 
 import mc.battleplugins.webapi.object.WebURL;
+import mc.battleplugins.webapi.object.callbacks.URLResponseHandler;
 
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 
-import com.lducks.battlepunishments.BattlePunishments;
 import com.lducks.battlepunishments.debugging.ConsoleMessage;
 import com.lducks.battlepunishments.debugging.DumpFile;
 
@@ -17,11 +20,12 @@ import com.lducks.battlepunishments.debugging.DumpFile;
  *
  */
 
-public class ConnectionCode {
+public class WebConnections {
 
 	private static YamlConfiguration config;
 	private static File f;
 	private static boolean valid;
+	private static String serverip = null;
 
 	/**
 	 * 
@@ -29,7 +33,7 @@ public class ConnectionCode {
 	 * Set the key's file
 	 */
 	public void setConfig(File f){
-		ConnectionCode.f = f;
+		WebConnections.f = f;
 		config = new YamlConfiguration();
 		try {
 			load();
@@ -90,7 +94,7 @@ public class ConnectionCode {
 			return false;
 		}
 
-		url.addData("server", BattlePunishments.getServerIP());
+		url.addData("server", getServerIP());
 		url.addData("key", getConnectionCode());
 		url.sendData(caller);
 
@@ -102,5 +106,48 @@ public class ConnectionCode {
 	 */
 	public static void setValid(boolean v) {
 		valid = v;
+	}
+	
+	/**
+	 * 
+	 * @return server IP of current server
+	 */
+	public static String getServerIP(){
+		if(serverip == null) {
+			final int port = Bukkit.getPort();
+
+			if(Bukkit.getServer().getIp() == null){
+				serverip = Bukkit.getServer().getIp();
+				if (port != 25565)
+					serverip += ":"+port;
+			} else {
+				URL whatismyip;
+				try {
+					whatismyip = new URL("http://BattlePunishments.net/grabbers/ip.php");
+				} catch (Exception e) {
+					e.printStackTrace();
+					return null;
+				}
+
+				WebURL url = new WebURL(whatismyip);
+
+				url.getPage(new URLResponseHandler() {
+					public void validResponse(final BufferedReader br) throws IOException {
+						String ip = br.readLine();
+						if(ip == null)
+							throw new NullPointerException();
+						serverip = ip;
+						if (port != 25565)
+							serverip += ":"+port;
+					}
+
+					public void invalidResponse(Exception e) {
+						e.printStackTrace();
+					}
+				});
+			}
+		}
+
+		return serverip;
 	}
 }
