@@ -146,7 +146,7 @@ public interface BattlePlayer {
 
 	/**
 	 * 
-	 * @return the time that the player was muted
+	 * @return long the time that the player was muted
 	 */
 	public long getMuteTime();
 
@@ -166,7 +166,7 @@ public interface BattlePlayer {
 	 * 
 	 * @return the time the player was muted
 	 */
-	public String getTimeOfMute();
+	public long getTimeOfMute();
 	
 	/**
 	 * 
@@ -223,7 +223,7 @@ public interface BattlePlayer {
 	 * 
 	 * @return time Time that player was banned
 	 */
-	public String getTimeOfBan();
+	public long getTimeOfBan();
 
 	/**
 	 * 

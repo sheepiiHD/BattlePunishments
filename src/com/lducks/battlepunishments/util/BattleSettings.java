@@ -77,7 +77,11 @@ public class BattleSettings {
 	}
 	
 	public static boolean useTagAPI(){
-		return config.getBoolean("nicknames.usetagapi");
+		boolean b = config.getBoolean("nicknames.usetagapi");
+		
+		if(b)
+			return PluginLoader.tagAPIInstalled();
+		else return false;
 	}
 
 	public static boolean wlRemoveOnBan() {
@@ -209,7 +213,7 @@ public class BattleSettings {
 		String s = config.getString("bans.notifyserver.format");
 		s.replace("{banner}", banner);
 		s.replace("{player}", player);
-		s.replace("{unbantime}", TimeConverter.convertToString(unbantime));
+		s.replace("{unbantime}", TimeConverter.convertLongToDate(unbantime));
 		s.replace("{reason}", reason);
 		
 		s = ChatEditor.colorChat(s);
@@ -263,5 +267,13 @@ public class BattleSettings {
 	 */
 	public static boolean logoutMessage() {
 		return config.getBoolean("logoutmessage");
+	}
+
+	public static String getDateFormat() {
+		return config.getString("dateformat");
+	}
+
+	public static String getTimeZone() {
+		return config.getString("timezone");
 	}
 }

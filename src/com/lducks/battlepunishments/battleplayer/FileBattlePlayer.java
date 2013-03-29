@@ -245,7 +245,7 @@ public class FileBattlePlayer implements BattlePlayer {
 		config.set("ban.reason", reason);
 		config.set("ban.time", time);
 		config.set("ban.by", string);
-		config.set("ban.timeofban", TimeConverter.convertToString(System.currentTimeMillis()));
+		config.set("ban.timeofban", TimeConverter.convertLongToDate(System.currentTimeMillis()));
 
 		if(ipbanned)
 			IPBan();
@@ -291,8 +291,8 @@ public class FileBattlePlayer implements BattlePlayer {
 		return t;
 	}
 
-	public String getTimeOfBan() {
-		return config.getString("ban.timeofban");
+	public long getTimeOfBan() {
+		return config.getLong("ban.timeofban");
 	}
 
 	public void blockCommand(String command){
@@ -453,7 +453,7 @@ public class FileBattlePlayer implements BattlePlayer {
 		config.set("mute.reason", reason);
 		config.set("mute.time", time);
 		config.set("mute.by", who);
-		config.set("mute.timeofmute", TimeConverter.convertToString(System.currentTimeMillis()));
+		config.set("mute.timeofmute", TimeConverter.convertLongToDate(System.currentTimeMillis()));
 
 		save();
 	}
@@ -487,8 +487,8 @@ public class FileBattlePlayer implements BattlePlayer {
 		return t;
 	}
 
-	public String getTimeOfMute() {
-		return config.getString("mute.timeofmute");
+	public long getTimeOfMute() {
+		return config.getLong("mute.timeofmute");
 	}
 
 	public void setNickname(String n){

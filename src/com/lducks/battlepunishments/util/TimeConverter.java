@@ -1,14 +1,11 @@
 package com.lducks.battlepunishments.util;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.TimeZone;
 
 public class TimeConverter {
-	/**
-	 * Calendar type, default GregorianCalendar();
-	 */
-	static Calendar cal = new GregorianCalendar();
-
 	/**
 	 * @param before Time to start at
 	 * @param time ex: 1d,5s
@@ -16,6 +13,8 @@ public class TimeConverter {
 	 * @throws Exception
 	 */
 	public static long convertToLong(long before, String time) throws Exception{
+		Calendar cal = new GregorianCalendar();
+		
 		String[] groupings = time.split(",");
 		if (groupings.length == 0)
 			return 0L;
@@ -60,8 +59,9 @@ public class TimeConverter {
 	 * @param time in long
 	 * @return time in calendar date
 	 */
-	public static String convertToString(long time) {
-		cal.setTimeInMillis(time);
-		return cal.getTime().toString();
+	public static String convertLongToDate(long time) {
+		SimpleDateFormat sdf = new SimpleDateFormat(BattleSettings.getDateFormat());
+		sdf.setTimeZone(TimeZone.getTimeZone(BattleSettings.getTimeZone()));
+		return sdf.format(time);
 	}
 }

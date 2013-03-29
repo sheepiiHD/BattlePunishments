@@ -72,8 +72,8 @@ public class SQLBattlePlayer implements BattlePlayer {
 		if(getPlayer() == null)
 			return;
 
-		config.setTimes(name, TimeConverter.convertToString(getPlayer().getFirstPlayed()),
-				TimeConverter.convertToString(getPlayer().getLastPlayed()), 
+		config.setTimes(name, TimeConverter.convertLongToDate(getPlayer().getFirstPlayed()),
+				TimeConverter.convertLongToDate(getPlayer().getLastPlayed()), 
 				getPlayer().getLocation());
 	}
 
@@ -203,11 +203,11 @@ public class SQLBattlePlayer implements BattlePlayer {
 		return config.getUnbanTime(name);
 	}
 
-	public String getTimeOfMute() {
+	public long getTimeOfMute() {
 		return config.getTimeOfMute(name);
 	}
 
-	public String getTimeOfBan() {
+	public long getTimeOfBan() {
 		return config.getTimeOfBan(name);
 	}
 

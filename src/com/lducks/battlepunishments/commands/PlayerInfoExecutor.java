@@ -45,13 +45,13 @@ public class PlayerInfoExecutor extends CustomCommandExecutor{
 				sender.sendMessage(RED + "Player is Permamuted");
 				sender.sendMessage(GREEN + "Muted By: " + YELLOW + muter);
 				sender.sendMessage(GREEN + "Reason: " + YELLOW + reason);
-				sender.sendMessage(GREEN + "Time Of Mute: "+YELLOW + bp.getTimeOfMute());
+				sender.sendMessage(GREEN + "Time Of Mute: "+YELLOW + TimeConverter.convertLongToDate(bp.getTimeOfMute()));
 			}else{
 				sender.sendMessage(RED + "Player is Muted");
 				sender.sendMessage(GREEN + "Muted By: " + YELLOW + muter);
 				sender.sendMessage(GREEN + "Reason: " + YELLOW + reason);
-				sender.sendMessage(GREEN + "Unmute Time: " + YELLOW + TimeConverter.convertToString(t));
-				sender.sendMessage(GREEN + "Time Of Mute: "+YELLOW + bp.getTimeOfMute());
+				sender.sendMessage(GREEN + "Unmute Time: " + YELLOW + TimeConverter.convertLongToDate(t));
+				sender.sendMessage(GREEN + "Time Of Mute: "+YELLOW + TimeConverter.convertLongToDate(bp.getTimeOfMute()));
 			}
 		}
 
@@ -65,13 +65,13 @@ public class PlayerInfoExecutor extends CustomCommandExecutor{
 				sender.sendMessage(RED + "Player is Permabanned");
 				sender.sendMessage(GREEN + "Banner: " + YELLOW + banner);
 				sender.sendMessage(GREEN + "Reason: " + YELLOW + reason);
-				sender.sendMessage(GREEN + "Time Of Ban: "+YELLOW + bp.getTimeOfBan());
+				sender.sendMessage(GREEN + "Time Of Ban: "+YELLOW + TimeConverter.convertLongToDate(bp.getTimeOfBan()));
 			}else{
 				sender.sendMessage(RED + "Player is Banned");
 				sender.sendMessage(GREEN + "Banner: " + YELLOW + banner);
 				sender.sendMessage(GREEN + "Reason: " + YELLOW + reason);
-				sender.sendMessage(GREEN + "Unban Time: " + YELLOW + TimeConverter.convertToString(t));
-				sender.sendMessage(GREEN + "Time Of Ban: "+YELLOW + bp.getTimeOfBan());
+				sender.sendMessage(GREEN + "Unban Time: " + YELLOW + TimeConverter.convertLongToDate(t));
+				sender.sendMessage(GREEN + "Time Of Ban: "+YELLOW + TimeConverter.convertLongToDate(bp.getTimeOfBan()));
 			}
 		}
 	}
@@ -80,11 +80,6 @@ public class PlayerInfoExecutor extends CustomCommandExecutor{
 		String n = bp.getRealName();
 		if(n == null)
 			n = bp.getName();
-
-		if(!bp.exists()) {
-			sender.sendMessage(RED + "Player was not found!");
-			return;
-		}
 
 		sender.sendMessage(DARK_GRAY + "----- " + BLUE + "Player Info For: " + ITALIC + n + DARK_GRAY + " -----");
 

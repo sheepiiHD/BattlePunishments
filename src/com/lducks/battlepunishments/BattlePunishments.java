@@ -59,7 +59,6 @@ public class BattlePunishments extends JavaPlugin{
 	private static String serverip = null;
 	private static Logger log = Logger.getLogger("Minecraft");
 	private static String name, version;
-	private static boolean hasupdates;
 	private static BattlePunishments plugin;
 	private static String path = "plugins/BattlePunishments";
 	private static List<String> watchlist;
@@ -101,8 +100,16 @@ public class BattlePunishments extends JavaPlugin{
 
 		if(BattleSettings.useWebsite()) {
 			getServerIP();
-			log.info("[BattlePunishments] Website enabled!");
 			this.getServer().getPluginManager().registerEvents(new WebAPIListener(), this);
+			
+			try {
+				ConnectionCode cc = new ConnectionCode();
+				cc.setConfig(new File(getPath()+"/private.key"));
+			}catch(Exception e) {
+				new DumpFile("ConnectionCode", e, "Error in private.key file or file does not exist");
+			}
+			
+			log.info("[BattlePunishments] Website enabled!");
 		}
 
 		try {
@@ -111,15 +118,8 @@ public class BattlePunishments extends JavaPlugin{
 			new DumpFile("onEnable", e, "Error enabling Metrics");
 		}
 
-		try {
-			ConnectionCode cc = new ConnectionCode();
-			cc.setConfig(new File(getPath()+"/private.key"));
-		}catch(Exception e) {
-			new DumpFile("ConnectionCode", e, "Error in private.key file or file does not exist");
-		}
-
 		new ConsoleMessage("sqlenabled   =   " + BattleSettings.sqlIsEnabled());
-		if(BattleSettings.sqlIsEnabled()) { // initialize the sql instance... in this case the anonymous new SQLInstance
+		if(BattleSettings.sqlIsEnabled()) {
 			sql = new SQLInstance();
 			SQLSerializerConfig.configureSQL(this, sql, BattleSettings.getSQLOptions());
 		}
@@ -133,7 +133,7 @@ public class BattlePunishments extends JavaPlugin{
 			e.printStackTrace();
 		}
 
-		if(PluginLoader.tagAPIInstalled() && BattleSettings.useTagAPI() == true)
+		if(BattleSettings.useTagAPI())
 			this.getServer().getPluginManager().registerEvents(new TagAPIListener(), this);
 
 		new Announcement();
@@ -150,12 +150,6 @@ public class BattlePunishments extends JavaPlugin{
 
 		if(BattleSettings.autoUpdate())
 			PluginUpdater.downloadPluginUpdates(this);
-		else {
-			if(PluginUpdater.hasPluginUpdates(this) != null) {
-				hasupdates = true;
-			}else
-				hasupdates = false;
-		}
 
 		muteall = false;
 	}
@@ -275,15 +269,6 @@ public class BattlePunishments extends JavaPlugin{
 			return new SQLIPListController(sql);
 		else
 			return new FileIPListController();
-	}
-
-	/**
-	 * 
-	 * @deprecated Use PluginUpdater.hasPluginUpdates();
-	 */
-	@Deprecated
-	public static boolean hasUpdates() {
-		return hasupdates;
 	}
 
 	/**

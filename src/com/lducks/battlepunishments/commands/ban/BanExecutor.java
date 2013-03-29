@@ -149,7 +149,7 @@ public class BanExecutor extends CustomCommandExecutor{
 							if(t == -1)
 								player1.sendMessage(RED + sender.getName() + " just permabanned " + player + ": " + r);
 							else
-								player1.sendMessage(RED + sender.getName() + " just banned " + player + " until " + TimeConverter.convertToString(t) + ": " + r);
+								player1.sendMessage(RED + sender.getName() + " just banned " + player + " until " + TimeConverter.convertLongToDate(t) + ": " + r);
 						}
 					}
 				}

@@ -41,7 +41,7 @@ public class DumpFile {
 			
 			ps.println("Version: BattlePunishments v"+BattlePunishments.getVersion());
 			ps.println();
-			ps.println("Day of Report: "+TimeConverter.convertToString(System.currentTimeMillis()));
+			ps.println("Day of Report: "+TimeConverter.convertLongToDate(System.currentTimeMillis()));
 			ps.println("Reason: "+message);
 			ps.println();
 			e.printStackTrace(ps);

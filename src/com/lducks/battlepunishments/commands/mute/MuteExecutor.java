@@ -126,7 +126,7 @@ public class MuteExecutor extends CustomCommandExecutor{
 							if(t == -1)
 								player1.sendMessage(RED + sender.getName() + " just permamuted " + player + ": " + reason);
 							else
-								player1.sendMessage(RED + sender.getName() + " just muted " + player + " until " + TimeConverter.convertToString(t) + ": " + reason);
+								player1.sendMessage(RED + sender.getName() + " just muted " + player + " until " + TimeConverter.convertLongToDate(t) + ": " + reason);
 						}
 					}
 				}

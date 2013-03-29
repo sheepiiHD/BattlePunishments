@@ -46,7 +46,7 @@ public class LoginListener implements Listener{
 						YELLOW + "tiny.cc/BattlePunishments");
 			}
 
-			if(BattleSettings.useWebsite()&& !ConnectionCode.validConnectionCode(null) && checkvalid) {
+			if(BattleSettings.useWebsite() && !ConnectionCode.validConnectionCode(null) && checkvalid) {
 				p.sendMessage(BLUE + "This server is not registered on http://BattlePunishments.net! " +
 						"Check it out to see what features you can get by signing up!");
 			}
@@ -61,7 +61,7 @@ public class LoginListener implements Listener{
 		BattlePlayer bp = BattlePunishments.createBattlePlayer(p.getName(), true);
 
 		if(bp.getFirstSeen() == null)
-			bp.setFirstSeen(TimeConverter.convertToString(p.getFirstPlayed()));
+			bp.setFirstSeen(TimeConverter.convertLongToDate(p.getFirstPlayed()));
 
 		String nn = bp.getNickname();
 
@@ -93,9 +93,9 @@ public class LoginListener implements Listener{
 						event.disallow(null, "Reason: Permabanned! "+reason);
 				}else{
 					if(BattleSettings.showBanner())
-						event.disallow(null, "Reason: Banned until " + TimeConverter.convertToString(t) + " by " + banner + "! "+reason);
+						event.disallow(null, "Reason: Banned until " + TimeConverter.convertLongToDate(t) + " by " + banner + "! "+reason);
 					else
-						event.disallow(null, "Reason: Banned until " + TimeConverter.convertToString(t) + "! "+reason);
+						event.disallow(null, "Reason: Banned until " + TimeConverter.convertLongToDate(t) + "! "+reason);
 				}
 
 				return;

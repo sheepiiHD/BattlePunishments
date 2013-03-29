@@ -25,7 +25,7 @@ public class BattleLog {
 		try {
 			FileOutputStream output = new FileOutputStream(f, true);
 			PrintStream ps = new PrintStream(output);
-			ps.println("["+TimeConverter.convertToString(System.currentTimeMillis())+"] "+message);
+			ps.println("["+TimeConverter.convertLongToDate(System.currentTimeMillis())+"] "+message);
 		} catch (Exception e) {
 			new DumpFile("addMessage", e, "com.lducks.battlepunishments.util.battlelogs.BattleLog.class");
 		}

@@ -29,13 +29,13 @@ public class BattleSQLConfiguration{
 		this.sql = sql;
 	}
 
-	public static final String executeBan = "replace into bp_ban (player,banner,reason,time,timeofban,ipbanned) VALUES(?,?,?,?,now(),?)";
+	public static final String executeBan = "replace into bp_ban (player,banner,reason,time,timeofban,ipbanned) VALUES(?,?,?,?,?,?)";
 	public void ban(String name, String reason, long time, String banner, boolean ipbanned) {
 
 		if(sqltype.equalsIgnoreCase("sqlite"))
 			executeBan.replace("replace into", "INSERT OR REPLACE INTO");
 
-		sql.executeUpdate(executeBan, name, banner, reason, time, ipbanned);
+		sql.executeUpdate(executeBan, name, banner, reason, time, System.currentTimeMillis(), ipbanned);
 	}
 
 	public static final String executeUnban = "delete from bp_ban where player=?";
@@ -59,8 +59,8 @@ public class BattleSQLConfiguration{
 	}
 
 	public static final String getTimeOfBan = "select timeofban from bp_ban where player=?";
-	public String getTimeOfBan(String name) {
-		return sql.getString(getTimeOfBan, name);
+	public long getTimeOfBan(String name) {
+		return sql.getLong(getTimeOfBan, name);
 	}
 
 
@@ -75,12 +75,12 @@ public class BattleSQLConfiguration{
 		return false;
 	}
 
-	public static final String executeMute = "replace into bp_mute (player,muter,reason,time,timeofmute) VALUES(?,?,?,?,now())";
+	public static final String executeMute = "replace into bp_mute (player,muter,reason,time,timeofmute) VALUES(?,?,?,?,?)";
 	public void mute(String name, String muter, String reason, long time) {
 		if(sqltype.equalsIgnoreCase("sqlite"))
 			executeMute.replace("replace into", "INSERT OR REPLACE INTO");
 
-		sql.executeUpdate(executeMute, name, muter, reason, time);
+		sql.executeUpdate(executeMute, name, muter, reason, time, System.currentTimeMillis());
 	}
 
 	public static final String executeUnmute = "delete from bp_mute where player=?";
@@ -115,8 +115,8 @@ public class BattleSQLConfiguration{
 	}
 
 	public static final String getTimeOfMute = "select timeofmute from bp_mute where player=?";
-	public String getTimeOfMute(String name) {
-		return sql.getString(getTimeOfMute, name);
+	public long getTimeOfMute(String name) {
+		return sql.getLong(getTimeOfMute, name);
 	}
 
 	public List<String> getIPList(String name) {

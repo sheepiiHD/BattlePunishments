@@ -26,7 +26,7 @@ public class MiscListener implements Listener{
 			return;
 		}
 		
-		bp.setLastSeen(TimeConverter.convertToString(System.currentTimeMillis()));
+		bp.setLastSeen(TimeConverter.convertLongToDate(System.currentTimeMillis()));
 		bp.setLogoutCoords(p.getLocation());
 	}
 }

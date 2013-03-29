@@ -38,6 +38,10 @@ activecommands:
 - sneak
 - stalk
 
+# Format that dates will be shown
+dateformat: "EE MMM dd, yy kk:mm:ss zz"
+timezone: "America/New_York"
+
 # Commands that are in the following list will be "listened to" when someone with the BattlePunishments.chatstalker uses /stalk
 stalkcommand:
   stalklist:
