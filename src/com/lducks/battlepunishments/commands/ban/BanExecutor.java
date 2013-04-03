@@ -161,13 +161,15 @@ public class BanExecutor extends CustomCommandExecutor{
 		bp.ban(r, time, sender.getName(), ipbanned);
 		bp.editStrikes(s);
 
-		try {
-			UpdateDatabase.updateStrikes(bp);
-			UpdateDatabase.updateBan(bp);
-		} catch (Exception e) {
-			new DumpFile("banPlayer", e, "Updating BP website");
+		if(BattleSettings.useWebsite()) {
+			try {
+				UpdateDatabase.updateStrikes(bp);
+				UpdateDatabase.updateBan(bp);
+			} catch (Exception e) {
+				new DumpFile("banPlayer", e, "Updating BP website");
+			}
 		}
-		
+
 		if(bp.isMuted() && time == -1)
 			bp.unmute();
 	}

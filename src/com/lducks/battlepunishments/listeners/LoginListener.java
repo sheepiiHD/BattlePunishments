@@ -18,8 +18,6 @@ import com.lducks.battlepunishments.listeners.chat.ChatEditor;
 import com.lducks.battlepunishments.util.BattlePerms;
 import com.lducks.battlepunishments.util.BattleSettings;
 import com.lducks.battlepunishments.util.TimeConverter;
-import com.lducks.battlepunishments.util.webrequests.WebConnections;
-import com.lducks.battlepunishments.util.webrequests.PluginUpdater;
 
 /**
  * 
@@ -29,28 +27,10 @@ import com.lducks.battlepunishments.util.webrequests.PluginUpdater;
 
 public class LoginListener implements Listener{
 
-	public static boolean checkvalid = false;
-	
 	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent event) {
 		if(!BattleSettings.loginMessage())
 			event.setJoinMessage(null);
-		
-		Player p = event.getPlayer();
-
-		if(p.isOp()) {
-			if(BattleSettings.autoUpdate() && PluginUpdater.hasPluginUpdates(BattlePunishments.getPlugin()) != null) {
-				p.sendMessage(RED + "It seems you are using an outdated version of BattlePunishments " +
-						"(v"+BattlePunishments.getVersion()+")");
-				p.sendMessage(RED + "You can get the latest version at " +
-						YELLOW + "tiny.cc/BattlePunishments");
-			}
-
-			if(BattleSettings.useWebsite() && !WebConnections.validConnectionCode(null) && checkvalid) {
-				p.sendMessage(BLUE + "This server is not registered on http://BattlePunishments.net! " +
-						"Check it out to see what features you can get by signing up!");
-			}
-		}
 	}
 
 	@EventHandler

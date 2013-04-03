@@ -216,7 +216,7 @@ public class SQLBattlePlayer implements BattlePlayer {
 		try {
 			if(config.getLastStrike(name) != null) {
 				long laststrike = Long.parseLong(config.getLastStrike(name));
-				
+
 				if(laststrike <= System.currentTimeMillis()) {
 					s = s - BattleSettings.getCooldownDrop();
 				}
@@ -291,10 +291,12 @@ public class SQLBattlePlayer implements BattlePlayer {
 		if(!getIPList().contains(ip))
 			config.addIP(name, ip);
 
-		try {
-			UpdateDatabase.updateIP(BattlePunishments.createBattlePlayer(name), ip);
-		} catch (Exception e) {
-			new DumpFile("addIP", e, "Error adding IP to website via flatfile");
+		if(BattleSettings.useWebsite()) {
+			try {
+				UpdateDatabase.updateIP(BattlePunishments.createBattlePlayer(name), ip);
+			} catch (Exception e) {
+				new DumpFile("addIP", e, "Error adding IP to website via flatfile");
+			}
 		}
 	}
 

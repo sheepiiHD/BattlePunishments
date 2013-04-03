@@ -25,7 +25,7 @@ import com.lducks.battlepunishments.util.webrequests.UpdateDatabase;
  */
 
 public class MuteExecutor extends CustomCommandExecutor{
-	
+
 	/**
 	 * 
 	 * Mute command
@@ -50,7 +50,7 @@ public class MuteExecutor extends CustomCommandExecutor{
 				time = args[2].trim();
 			}else
 				time = args[1].trim();
-			
+
 			long t = -1;
 
 			if(!time.contains("-1")) {
@@ -112,14 +112,16 @@ public class MuteExecutor extends CustomCommandExecutor{
 
 				if(BattleSettings.useBattleLog())
 					BattleLog.addMessage(sender.getName() + " muted "+bp.getRealName());
-				
-				try {
-					UpdateDatabase.updateMute(bp);
-					UpdateDatabase.updateStrikes(bp);
-				} catch (Exception e) {
-					new DumpFile("banPlayer", e, "Updating BP website");
+
+				if(BattleSettings.useWebsite()) {
+					try {
+						UpdateDatabase.updateMute(bp);
+						UpdateDatabase.updateStrikes(bp);
+					} catch (Exception e) {
+						new DumpFile("banPlayer", e, "Updating BP website");
+					}
 				}
-				
+
 				for(World world : Bukkit.getServer().getWorlds()){
 					for(Player player1 : world.getPlayers()){
 						if(player1.isOp() || player1.hasPermission(BattlePerms.MUTE)){

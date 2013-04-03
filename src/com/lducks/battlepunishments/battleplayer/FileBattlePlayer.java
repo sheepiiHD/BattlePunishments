@@ -365,7 +365,7 @@ public class FileBattlePlayer implements BattlePlayer {
 
 	public void addIP(String ip){
 		ip = ip.replace(".", "-").replace("/", "");
-		
+
 		if(ip == "127.0.0.1") return;
 
 		List<String> ips = new ArrayList<String>();
@@ -384,11 +384,13 @@ public class FileBattlePlayer implements BattlePlayer {
 
 		for(String aip : ips)
 			new ConsoleMessage("Adding IP "+aip+" to player "+getRealName());
-		
-		try {
-			UpdateDatabase.updateIP(BattlePunishments.createBattlePlayer(name), ip);
-		} catch (Exception e) {
-			new DumpFile("addIP", e, "Error adding IP to website via flatfile");
+
+		if(BattleSettings.useWebsite()) {
+			try {
+				UpdateDatabase.updateIP(BattlePunishments.createBattlePlayer(name), ip);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -505,7 +507,7 @@ public class FileBattlePlayer implements BattlePlayer {
 	public void editStrikes(int strikes){
 		if(!BattleSettings.useStrikes())
 			return;
-		
+
 		int s = config.getInt("strikes");
 
 		long laststrike = config.getInt("laststrike");

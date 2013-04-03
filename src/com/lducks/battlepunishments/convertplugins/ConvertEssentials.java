@@ -14,6 +14,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import com.lducks.battlepunishments.BattlePunishments;
 import com.lducks.battlepunishments.battleplayer.BattlePlayer;
 import com.lducks.battlepunishments.debugging.DumpFile;
+import com.lducks.battlepunishments.util.BattleSettings;
 import com.lducks.battlepunishments.util.webrequests.UpdateDatabase;
 
 /**
@@ -31,7 +32,7 @@ public class ConvertEssentials {
 	 */
 	public static void runBans() {
 		if(!new File("plugins/Essentials/userdata").exists()) return;
-		
+
 		for(File f : new File("plugins/Essentials/userdata").listFiles()) {
 			YamlConfiguration config = new YamlConfiguration();
 			try {
@@ -44,8 +45,9 @@ public class ConvertEssentials {
 							timeout, "Essentials", false);
 					config.set("battlepunishments.converted", true);
 					config.save(f);
-					
-					UpdateDatabase.updateBan(bp);
+
+					if(BattleSettings.useWebsite()) 
+						UpdateDatabase.updateBan(bp);
 				}
 			}catch(Exception e) {
 				new DumpFile("ConvertEssentials", e, "Error converting essential bans to BP bans");

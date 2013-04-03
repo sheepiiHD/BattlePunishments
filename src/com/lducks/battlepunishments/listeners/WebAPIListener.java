@@ -1,5 +1,9 @@
 package com.lducks.battlepunishments.listeners;
 
+import static org.bukkit.ChatColor.BLUE;
+import static org.bukkit.ChatColor.RED;
+import static org.bukkit.ChatColor.YELLOW;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 
@@ -12,7 +16,11 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerLoginEvent;
 
+import com.lducks.battlepunishments.BattlePunishments;
+import com.lducks.battlepunishments.util.BattleSettings;
+import com.lducks.battlepunishments.util.webrequests.PluginUpdater;
 import com.lducks.battlepunishments.util.webrequests.WebConnections;
 
 /**
@@ -20,6 +28,24 @@ import com.lducks.battlepunishments.util.webrequests.WebConnections;
  *
  */
 public class WebAPIListener implements Listener{
+
+	public void onPlayerLogin(PlayerLoginEvent event) {
+		Player p = event.getPlayer();
+
+		if(p.isOp()) {
+			if(BattleSettings.autoUpdate() && PluginUpdater.hasPluginUpdates(BattlePunishments.getPlugin()) != null) {
+				p.sendMessage(RED + "It seems you are using an outdated version of BattlePunishments " +
+						"(v"+BattlePunishments.getVersion()+")");
+				p.sendMessage(RED + "You can get the latest version at " +
+						YELLOW + "tiny.cc/BattlePunishments");
+			}
+
+			if(BattleSettings.useWebsite() && !WebConnections.validConnectionCode(null)) {
+				p.sendMessage(BLUE + "This server is not registered on http://BattlePunishments.net! " +
+						"Check it out to see what features you can get by signing up!");
+			}
+		}
+	}
 
 	public static int timerid = -2;
 
@@ -45,14 +71,14 @@ public class WebAPIListener implements Listener{
 							valid = false;
 
 						WebConnections.setValid(valid);
-						
+
 						if(timerid != -2) {
 							Bukkit.getScheduler().cancelTask(timerid);
 							timerid = -2;
 
 							if(event.getCaller() == null)
 								return;
-							
+
 							Player p = Bukkit.getPlayer(event.getCaller());
 							if(p != null) {
 								if(valid) {
