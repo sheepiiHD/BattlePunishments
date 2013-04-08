@@ -3,6 +3,7 @@ package com.lducks.battlepunishments.commands.mute;
 import static org.bukkit.ChatColor.RED;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -121,6 +122,11 @@ public class MuteExecutor extends CustomCommandExecutor{
 						new DumpFile("banPlayer", e, "Updating BP website");
 					}
 				}
+
+				bp.getPlayer().sendMessage(ChatColor.RED + "You have been muted.");
+				
+				if(BattleSettings.showBanner())
+					bp.getPlayer().sendMessage(ChatColor.RED + "Muted By: " + ChatColor.GREEN + sender.getName());
 
 				for(World world : Bukkit.getServer().getWorlds()){
 					for(Player player1 : world.getPlayers()){
