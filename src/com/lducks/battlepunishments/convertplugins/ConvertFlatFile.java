@@ -6,8 +6,6 @@
 package com.lducks.battlepunishments.convertplugins;
 
 import java.io.File;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 
 import com.lducks.battlepunishments.BattlePunishments;
@@ -19,8 +17,6 @@ import com.lducks.battlepunishments.debugging.DumpFile;
  * 
  */
 public class ConvertFlatFile {
-
-	final static Charset ENCODING = StandardCharsets.UTF_8;
 
 	/**
 	 * 
@@ -36,7 +32,7 @@ public class ConvertFlatFile {
 		File f = new File(BattlePunishments.getPath() + "/bans.txt");
 		
 		try {
-			Scanner scanner =  new Scanner(f, ENCODING.name());
+			Scanner scanner =  new Scanner(f);
 			while(scanner.hasNextLine()) {
 				String line = scanner.nextLine();
 				

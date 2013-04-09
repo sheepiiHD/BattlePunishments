@@ -6,8 +6,6 @@
 package com.lducks.battlepunishments.convertplugins;
 
 import java.io.File;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -22,8 +20,6 @@ import com.lducks.battlepunishments.util.webrequests.UpdateDatabase;
  * 
  */
 public class ConvertEssentials {
-
-	final static Charset ENCODING = StandardCharsets.UTF_8;
 
 	/**
 	 * 
