@@ -7,7 +7,6 @@ import static org.bukkit.ChatColor.YELLOW;
 import java.io.BufferedReader;
 import java.io.IOException;
 
-import mc.battleplugins.webapi.controllers.timers.Scheduler;
 import mc.battleplugins.webapi.event.SendDataEvent;
 import mc.battleplugins.webapi.object.callbacks.URLResponseHandler;
 
@@ -61,7 +60,7 @@ public class WebAPIListener implements Listener{
 					return;
 				}
 
-				Scheduler.scheduleSynchrounousTask(new Runnable() {
+				Bukkit.getScheduler().scheduleSyncDelayedTask(BattlePunishments.getPlugin(), new Runnable() {
 					public void run() {
 						boolean valid = false;
 
@@ -97,7 +96,7 @@ public class WebAPIListener implements Listener{
 			}
 
 			public void invalidResponse(Exception e) {
-				Scheduler.scheduleSynchrounousTask(new Runnable() {
+				Bukkit.getScheduler().scheduleSyncDelayedTask(BattlePunishments.getPlugin(), new Runnable() {
 					public void run() {
 						if(timerid != -2) {
 							Bukkit.getScheduler().cancelTask(timerid);

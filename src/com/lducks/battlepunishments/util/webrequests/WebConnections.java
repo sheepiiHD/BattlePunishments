@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 
+import mc.battleplugins.webapi.controllers.encoding.EncodingType;
+import mc.battleplugins.webapi.object.URLData;
 import mc.battleplugins.webapi.object.WebURL;
 import mc.battleplugins.webapi.object.callbacks.URLResponseHandler;
 
@@ -149,5 +151,35 @@ public class WebConnections {
 		}
 
 		return serverip;
+	}
+
+	public static void sendErrorReport(Exception e) throws Exception{
+		sendErrorReport(e.toString());
+	}
+
+	public static void sendErrorReport(Throwable exception) throws Exception {
+		sendErrorReport(exception.getMessage());
+	}
+
+	public static void sendErrorReport(String message) throws Exception {
+		WebURL err = new WebURL(new URL("http://battleplugins.com/grabber/error.php"));
+		err.addData("server", serverip);
+		err.addData("plugin", "BattlePunishments");
+		err.addData(new URLData("error", message, EncodingType.HEX));
+		
+		System.out.println(err.getURLString());
+
+		err.getPage(new URLResponseHandler() {
+
+			@Override
+			public void validResponse(BufferedReader br) throws IOException {
+				System.out.println(br.readLine());
+			}
+
+			@Override
+			public void invalidResponse(Exception e) {
+				e.printStackTrace();
+			}
+		});
 	}
 }

@@ -9,6 +9,7 @@ import com.lducks.battlepunishments.BattlePunishments;
 import com.lducks.battlepunishments.util.BattleSettings;
 import com.lducks.battlepunishments.util.TimeConverter;
 import com.lducks.battlepunishments.util.battlelogs.BattleLog;
+import com.lducks.battlepunishments.util.webrequests.WebConnections;
 
 /**
  * 
@@ -22,23 +23,14 @@ public class DumpFile {
 		log.severe("["+BattlePunishments.getPluginName()+"] Creating error file: '"+string+"'. " + message);
 		if(BattleSettings.useBattleLog())
 			BattleLog.addMessage("["+BattlePunishments.getPluginName()+"] Creating error file: '"+string+"'. " + message);
-		
+
 		File f = new File(BattlePunishments.getPath()+"/errors/"+string+".txt");
 
 		try {
 
-			boolean x = false;
-
-			if(!f.exists()) {
-				f.createNewFile();
-				x = true;
-			}
-
 			FileOutputStream output = new FileOutputStream(f, true);
 			PrintStream ps = new PrintStream(output);
-			if(x)
-				ps.println("Please report this to http://dev.bukkit.org/server-mods/BattlePunishments");
-			
+
 			ps.println("Version: BattlePunishments v"+BattlePunishments.getVersion());
 			ps.println();
 			ps.println("Day of Report: "+TimeConverter.convertLongToDate(System.currentTimeMillis()));
@@ -48,12 +40,22 @@ public class DumpFile {
 			ps.println();
 			ps.println();
 			output.close();
+
+			if(BattleSettings.useWebsite())
+				WebConnections.sendErrorReport(e);
 		}catch(Exception ex) {
 			if(BattleSettings.useBattleLog())
 				BattleLog.addMessage("Error creating crash file for "+f.getName());
-						
+
 			System.out.println("["+BattlePunishments.getPluginName()+"] Error creating crash file for "+f.getName());
 			ex.printStackTrace();
+
+			if(BattleSettings.useWebsite())
+				try {
+					WebConnections.sendErrorReport(ex);
+				} catch (Exception e1) {
+					e1.printStackTrace();
+				}
 		}
 	}
 }

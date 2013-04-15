@@ -92,7 +92,7 @@ public class BattlePunishments extends JavaPlugin{
 		
 		new FileMaker();
 		saveDefaultConfig();
-
+		
 		BattleSettings bs = new BattleSettings();
 		bs.setConfig(new File(getPath()+"/config.yml"));
 
