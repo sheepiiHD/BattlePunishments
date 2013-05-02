@@ -1,5 +1,8 @@
 package com.lducks.battlepunishments.util.webrequests;
 
+import static org.bukkit.ChatColor.RED;
+import static org.bukkit.ChatColor.YELLOW;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -11,10 +14,13 @@ import mc.battleplugins.webapi.object.WebURL;
 import mc.battleplugins.webapi.object.callbacks.URLResponseHandler;
 
 import org.bukkit.Bukkit;
+import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
 
+import com.lducks.battlepunishments.BattlePunishments;
 import com.lducks.battlepunishments.debugging.ConsoleMessage;
 import com.lducks.battlepunishments.debugging.DumpFile;
+import com.lducks.battlepunishments.listeners.WebAPIListener;
 
 /**
  * 
@@ -109,7 +115,7 @@ public class WebConnections {
 	public static void setValid(boolean v) {
 		valid = v;
 	}
-	
+
 	/**
 	 * 
 	 * @return server IP of current server
@@ -166,7 +172,7 @@ public class WebConnections {
 		err.addData("server", serverip);
 		err.addData("plugin", "BattlePunishments");
 		err.addData(new URLData("error", message, EncodingType.HEX));
-		
+
 		System.out.println(err.getURLString());
 
 		err.getPage(new URLResponseHandler() {
@@ -181,5 +187,31 @@ public class WebConnections {
 				e.printStackTrace();
 			}
 		});
+	}
+
+	/**
+	 * 
+	 */
+	public static void runCheckTimer(final CommandSender sender) {
+		WebAPIListener.timerid = Bukkit.getScheduler().scheduleSyncRepeatingTask(BattlePunishments.getPlugin(), new Runnable() {
+
+			int i;
+
+			@Override
+			public void run() {
+				if(i > 5) {
+					sender.sendMessage(RED + "Connection timed out");
+					cancelThis();
+					return;
+				}
+
+				sender.sendMessage(YELLOW + "Checking....");
+				i++;
+			}
+		}, 0L, 60L);
+	}
+
+	private static void cancelThis() {
+		Bukkit.getScheduler().cancelTask(WebAPIListener.timerid);
 	}
 }

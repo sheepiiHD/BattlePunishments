@@ -6,7 +6,6 @@ import static org.bukkit.ChatColor.GREEN;
 import static org.bukkit.ChatColor.RED;
 import static org.bukkit.ChatColor.YELLOW;
 
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
 import com.lducks.battlepunishments.BattlePunishments;
@@ -14,7 +13,6 @@ import com.lducks.battlepunishments.convertplugins.ConvertCommandBook;
 import com.lducks.battlepunishments.convertplugins.ConvertEssentials;
 import com.lducks.battlepunishments.convertplugins.ConvertFlatFile;
 import com.lducks.battlepunishments.convertplugins.ConvertVanilla;
-import com.lducks.battlepunishments.listeners.WebAPIListener;
 import com.lducks.battlepunishments.util.BattlePerms;
 import com.lducks.battlepunishments.util.BattleSettings;
 import com.lducks.battlepunishments.util.PluginLoader;
@@ -55,28 +53,10 @@ public class BattlePunishmentsExecutor extends CustomCommandExecutor {
 		}
 
 		WebConnections.validConnectionCode(sender.getName());
-		WebAPIListener.timerid = Bukkit.getScheduler().scheduleSyncRepeatingTask(BattlePunishments.getPlugin(), new Runnable() {
-			
-			int i;
-
-			@Override
-			public void run() {
-				if(i > 5) {
-					sender.sendMessage(RED + "Connection timed out");
-					cancelThis();
-					return;
-				}
-
-				sender.sendMessage(YELLOW + "Checking....");
-				i++;
-			}
-		}, 0L, 60L);
+		if(BattleSettings.useWebsite())
+			WebConnections.runCheckTimer(sender);
 	}
 	
-	private void cancelThis() {
-		Bukkit.getScheduler().cancelTask(WebAPIListener.timerid);
-	}
-
 	@MCCommand(op=true, cmds={"convert"})
 	public void onConvert(CommandSender sender, String type, String plugin) {
 		if(type.equalsIgnoreCase("ban")) {
