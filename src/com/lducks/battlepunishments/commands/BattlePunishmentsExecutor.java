@@ -52,9 +52,10 @@ public class BattlePunishmentsExecutor extends CustomCommandExecutor {
 			return;
 		}
 
-		WebConnections.validConnectionCode(sender.getName());
-		if(BattleSettings.useWebsite())
+		if(BattleSettings.useWebsite()) {
+			WebConnections.validConnectionCode(sender.getName());
 			WebConnections.runCheckTimer(sender);
+		}
 	}
 	
 	@MCCommand(op=true, cmds={"convert"})

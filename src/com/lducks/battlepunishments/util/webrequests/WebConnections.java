@@ -189,9 +189,6 @@ public class WebConnections {
 		});
 	}
 
-	/**
-	 * 
-	 */
 	public static void runCheckTimer(final CommandSender sender) {
 		WebAPIListener.timerid = Bukkit.getScheduler().scheduleSyncRepeatingTask(BattlePunishments.getPlugin(), new Runnable() {
 

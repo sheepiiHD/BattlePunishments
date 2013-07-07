@@ -4,6 +4,7 @@ import java.net.URL;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+import mc.battleplugins.webapi.object.ConnectionType;
 import mc.battleplugins.webapi.object.WebURL;
 
 import org.bukkit.Bukkit;
@@ -37,8 +38,9 @@ public class UpdateDatabase {
 		url.addData("banner", bp.getBanner());
 		url.addData("reason", bp.getBanReason());
 		url.addData("time", ""+bp.getBanTime());
-		
+		url.setConnectionType(ConnectionType.POST);
 		url.sendData();
+		
 	}
 
 	/**
@@ -56,7 +58,7 @@ public class UpdateDatabase {
 		url.addData("muter", bp.getMuter());
 		url.addData("reason", bp.getMuteReason());
 		url.addData("time", ""+bp.getMuteTime());
-
+		url.setConnectionType(ConnectionType.POST);
 		url.sendData();
 	}
 
@@ -74,7 +76,7 @@ public class UpdateDatabase {
 		url.addData("player", bp.getRealName());
 		url.addData("strikes", ""+bp.getStrikes());
 		url.addData("maxstrikes", ""+BattleSettings.getStrikesMax());
-		
+		url.setConnectionType(ConnectionType.POST);
 		url.sendData();
 	}
 
@@ -111,7 +113,7 @@ public class UpdateDatabase {
 		url.addData("server", WebConnections.getServerIP());
 		url.addData("player", bp.getRealName());
 		url.addData("ip", ip);
-		
+		url.setConnectionType(ConnectionType.POST);
 		url.sendData();
 	}
 }

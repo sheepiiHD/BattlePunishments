@@ -17,14 +17,6 @@ public interface BattlePlayer {
 	 * @return The name of the person. This name will be all lower case.
 	 */
 	public String getName();
-	
-	/**
-	 * 
-	 * @deprecated Method is no longer needed, the plugin sets the real name on its own.
-	 * 
-	 */
-	@Deprecated
-	public void setRealName();
 
 	/**
 	 * 
@@ -85,38 +77,9 @@ public interface BattlePlayer {
 
 	/**
 	 * 
-	 * @deprecated Method no longer needed due to plugin handling bad players on its own
-	 * 
-	 */
-	@Deprecated
-	public void deletePlayer();
-
-	/**
-	 * 
 	 * @return String - Display name of the player
 	 */
 	public String getDisplayName();
-
-	/**
-	 * 
-	 * @deprecated Use getPlayer().sendMessage();
-	 */
-	@Deprecated
-	public void sendMessage(String string);
-
-	/**
-	 * 
-	 * @deprecated Method invalid
-	 */
-	@Deprecated
-	public boolean contains(String string);
-
-	/**
-	 * 
-	 * @deprecated Method invalid
-	 */
-	@Deprecated
-	public void removeField(String string);
 
 	/**
 	 * 
@@ -305,11 +268,4 @@ public interface BattlePlayer {
 	 * @return boolean is player a registered BattlePlayer
 	 */
 	public boolean exists();
-
-	/**
-	 * 
-	 * @deprecated Use .getPlayer().hasPlayedBefore();
-	 */
-	@Deprecated
-	public boolean hasPlayedBefore();
 }
